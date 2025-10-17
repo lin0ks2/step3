@@ -1785,6 +1785,12 @@ regStubHint:'Placeholder — activation logic will be added later.'}
 
     try{
       const p = pack();
+      if (bodyEl){
+        if (!(Array.isArray(p.infoSteps) && p.infoSteps.length)){
+          const fb=['Запоминайте слова — увидели слово — выберите перевод.','Добавляйте в Избранное — отмечайте важные слова, чтобы вернуться к ним позже.','Используйте кнопку «Не знаю» — это помогает продвигаться дальше и не считается ошибкой.'];
+          bodyEl.innerHTML = '<ul>' + fb.map(s=>`<li>${s}</li>`).join('') + '</ul>';
+        }
+      }
       if (Array.isArray(p.infoSteps)){
         bodyEl.innerHTML = '<ul>' + p.infoSteps.map(s=>`<li>${String(s||'')}</li>`).join('') + '</ul>';
       }

@@ -181,6 +181,16 @@ App.saveState = function(){
     okBtn:document.getElementById('okBtn'),
     dictListHost:document.getElementById('dictList')
   };
+
+  try{
+    function __uiLang(){ try{ return (App.settings && (App.settings.uiLang||App.settings.lang)) || 'uk'; }catch(_){ return 'uk'; } }
+    const L = __uiLang();
+    const pack = (window.I18N && (I18N[L]||I18N.uk)) || {};
+    const title = (pack && pack.appTitle) || 'Lexitron';
+    const el = document.getElementById('title');
+    if (el && (!el.textContent || el.textContent.trim()==='')) el.textContent = title;
+  }catch(_){}
+
   if (App.DOM.copyYearEl) App.DOM.copyYearEl.textContent = new Date().getFullYear();
 
   App.bootstrap = function(){
