@@ -68,7 +68,7 @@ settingsTitle: "Настройки",
       licensed: "Зарегистрировано",
       notLicensed: "Не зарегистрировано",
     
-      footer.copy: "© 2025 Lexitron",
+      footer.copy: "© 2025 Lexitron"
     },
 
     uk: {
@@ -137,7 +137,7 @@ settingsTitle: "Налаштування",
       licensed: "Зареєстровано",
       notLicensed: "Не зареєстровано",
     
-      footer.copy: "© 2025 Lexitron",
+      footer.copy: "© 2025 Lexitron"
     },
   };
 
