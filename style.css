@@ -1019,12 +1019,7 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 
 
 /* ==========================================================================
-   LEXITRON · SETTINGS MODAL — CONSOLIDATED FIXES (final, scoped)
-   - Headings font + weight
-   - Center the toggle row
-   - True divider under toggle (pseudo-element, same insets as header/footer)
-   - Backup buttons identical to "Не знаю"
-   Everything is scoped to #settingsModal to avoid global side-effects.
+   LEXITRON · SETTINGS MODAL — CONSOLIDATED FIXES (buttons = btnPill)
    ========================================================================== */
 #settingsModal .modalBody .backupTitle,
 #settingsModal .modalBody .settingsSubtitle{
@@ -1035,7 +1030,7 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
   text-align:left;
 }
 
-/* Toggle row centered */
+/* Toggle centered */
 #settingsModal #modeToggleWrap{
   user-select:none;
   display:flex;
@@ -1050,7 +1045,7 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
   gap:12px;
 }
 
-/* Divider right under the toggle, pixel-perfect like header/footer */
+/* Divider under toggle (like header/footer) */
 #settingsModal .modalBody #modeToggleWrap + .sectionDivider{
   position:relative;
   height:0;
@@ -1059,38 +1054,33 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 #settingsModal .modalBody #modeToggleWrap + .sectionDivider::after{
   content:"";
   position:absolute;
-  left:14px; right:14px;          /* same horizontal insets as .modalHeader::after */
+  left:14px; right:14px;
   height:1px;
   background:var(--border);
   transform:translateZ(0);
   -webkit-transform:translateZ(0);
 }
 
-/* Backup buttons = identical to "Не знаю" (button.ghost) */
+/* Backup buttons styled exactly like #infoModal .btnPill */
 #settingsModal #backupSection .btn{
-  background:var(--idk-bg);
-  border:1px solid var(--border);
-  color:var(--idk-fg);
-  margin-top:6px;
-  height:42px;
-  padding:0 16px;
-  border-radius:12px;
-  font-size:15px;
-  font-weight:600;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:none;
-  will-change:transform, filter;
+background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 15px;
+
+  font-weight: 500;
+  box-shadow: none;
+ padding:8px 16px;
 }
-#settingsModal #backupSection .btn:hover{ filter:brightness(1.06); }
-#settingsModal #backupSection .btn:focus,
-#settingsModal #backupSection .btn:focus-visible{ outline:none; box-shadow:0 0 0 3px var(--focus-ring); }
-#settingsModal #backupSection .btn:active{ transform:translateY(1px); }
-[data-theme="dark"] #settingsModal #backupSection .btn{
-  background:#111827;
-  color:var(--text);
-  border:1px solid #374151;
-  box-shadow:none;
+#settingsModal #backupSection .btn:hover{
+background: rgba(0,0,0,0.05);
+}
+#settingsModal #backupSection .btn:disabled{
+opacity:.6;
+  background: var(--btn-disabled-bg, rgba(0,0,0,.12));
+  color: var(--muted);
+  border: none;
+  cursor: default;
 }
 /* ========================================================================== */
