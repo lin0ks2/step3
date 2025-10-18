@@ -1010,6 +1010,14 @@ renderDictList();
       })();
     }catch(_){}
   }
+/*__settings_listener__*/
+try{
+  if(!window.__lex_settings_fill_hooked){
+    window.__lex_settings_fill_hooked=true;
+    document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){ } });
+  }
+}catch(_){ }
+
   function openInfo(){ try{ fillFromI18n(); modal && modal.classList.remove('hidden'); }catch(_){} }
   function closeInfo(){ try{ modal && modal.classList.add('hidden'); }catch(_){} }
 
@@ -1036,9 +1044,7 @@ renderDictList();
   function fillFromI18n(){
     try{
       const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
-  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
-
-      if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
+if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
       if (contentEl){
         const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
         if (normalEl && t.modeNormal) normalEl.textContent = String(t.modeNormal);
@@ -1060,6 +1066,14 @@ renderDictList();
     }catch(_){}
   }
   function open(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
+/*__donate_listener__*/
+try{
+  if(!window.__lex_donate_fill_hooked){
+    window.__lex_donate_fill_hooked=true;
+    document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){ } });
+  }
+}catch(_){ }
+
   function close(){ try{ modal.classList.add('hidden'); }catch(_){} }
 
   btn.addEventListener('click', open, { passive:true });
@@ -1089,12 +1103,18 @@ renderDictList();
     if (okBtn) okBtn.textContent = tr.ok || 'OK';
     if (infoBtn && tr.infoTitle) infoBtn.title = tr.infoTitle; // тултип «Инструкция»
     if (Array.isArray(tr.infoSteps) && bodyEl){
-      bodyEl.innerHTML = '<ul>' + tr.infoSteps.map(function(s){ return '<li>'+String(s||'')+'</li>'; };
-  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fill(); }catch(_){} });
-).join('') + '</ul>';
+      bodyEl.innerHTML = '<ul>' + tr.infoSteps.map(function(s){ return '<li>' + String(s||'') + '</li>'; }).join('') + '</ul>';
     }
   }
   function open(){ fill(); modal.classList.remove('hidden'); }
+/*__info_listener__*/
+try{
+  if(!window.__lex_info_fill_hooked){
+    window.__lex_info_fill_hooked=true;
+    document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fill(); }catch(_){ } });
+  }
+}catch(_){ }
+
       window.addEventListener('lexi:lang-changed', function(){ try{ renderAboutDynamic(); }catch(_){} });
 function close(){ modal.classList.add('hidden'); }
 
@@ -1234,6 +1254,14 @@ function close(){ modal.classList.add('hidden'); }
     }catch(_){}
   }
   function open(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
+/*__donate_listener__*/
+try{
+  if(!window.__lex_donate_fill_hooked){
+    window.__lex_donate_fill_hooked=true;
+    document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){ } });
+  }
+}catch(_){ }
+
   function close(){ try{ modal.classList.add('hidden'); }catch(_){} }
 
   btn.addEventListener('click', function(e){ try{ e.preventDefault(); e.stopPropagation(); }catch(_){ } open(); }, { passive:false });
