@@ -37,10 +37,12 @@ App.starKey = function(wid, dk){
     }
   })();
 
-  App.i18n = function(lang){
-    try{
-      lang = (lang || (App.settings && (App.settings.uiLang || App.settings.lang)) || 'uk').toLowerCase();
-      const base = (I18N_FALLBACK && I18N_FALLBACK[lang]) ? I18N_FALLBACK[lang] : (I18N_FALLBACK && I18N_FALLBACK.uk) || {};
+  App.i18n = function(){
+  try{ var lang = (App && App.settings && App.settings.uiLang) || 'uk';
+       var base = (window.I18N && window.I18N[lang]) || {};
+       return base;
+  }catch(_){ return {}; }
+};
       return base;
     }catch(_){ return (I18N_FALLBACK && I18N_FALLBACK.uk) || {}; }
   };
@@ -400,3 +402,16 @@ function T(key){
   if (DEBUG_I18N && (v === undefined)) { try{ console.warn('[i18n] missing:', key, 'lang=', App.settings.uiLang); }catch(_){} }
   return v || '';
 }
+
+/* i18n strict: setter */
+App.setUiLang = function(lang){
+  try{
+    if (!lang) return;
+    if (!App.settings) App.settings = {};
+    App.settings.uiLang = String(lang).toLowerCase();
+    try{ localStorage.setItem('uiLang', App.settings.uiLang); }catch(_){}
+    try{ document.documentElement.setAttribute('lang', App.settings.uiLang); }catch(_){}
+    try{ document.dispatchEvent(new CustomEvent('lexitron:ui-lang-changed', { detail:{ lang: App.settings.uiLang } })); }catch(_){}
+    try{ App.applyI18nTitles(document); }catch(_){}
+  }catch(_){}
+};

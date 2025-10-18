@@ -1035,7 +1035,9 @@ renderDictList();
 
   function fillFromI18n(){
     try{
-      const t = (typeof App.i18n==='function') ? (App.i18n()||{}) : {};
+      const t = (typeof App.i18n==='function') ? (App.i18n()||{}
+  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
+) : {};
       if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
       if (contentEl){
         const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
@@ -1087,7 +1089,9 @@ renderDictList();
     if (okBtn) okBtn.textContent = tr.ok || 'OK';
     if (infoBtn && tr.infoTitle) infoBtn.title = tr.infoTitle; // тултип «Инструкция»
     if (Array.isArray(tr.infoSteps) && bodyEl){
-      bodyEl.innerHTML = '<ul>' + tr.infoSteps.map(function(s){ return '<li>'+String(s||'')+'</li>'; }).join('') + '</ul>';
+      bodyEl.innerHTML = '<ul>' + tr.infoSteps.map(function(s){ return '<li>'+String(s||'')+'</li>'; }
+  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fill(); }catch(_){} });
+).join('') + '</ul>';
     }
   }
   function open(){ fill(); modal.classList.remove('hidden'); }
@@ -1220,7 +1224,9 @@ function close(){ modal.classList.add('hidden'); }
 
   function fillFromI18n(){
     try{
-      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{}) : {};
+      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{}
+  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
+) : {};
       if (titleEl && t.donateTitle)  titleEl.textContent = String(t.donateTitle);
       if (contentEl && t.donateText){
         const p = contentEl.querySelector('p');
@@ -1920,4 +1926,17 @@ regStubHint:'Placeholder — activation logic will be added later.'}
       obs.observe(modal, {attributes:true, attributeFilter:['class']});
     }catch(_){}
   }catch(e){(void 0); }
+})();
+
+/*HOOK_UI_LANG_SELECT*/
+(function(){
+  try{
+    var sel = document.querySelector("select[name='uiLang'], #uiLang, [data-role='uiLang']");
+    if(sel && !sel.__lex_hooked){
+      sel.__lex_hooked = true;
+      sel.addEventListener('change', function(ev){
+        try{ App.setUiLang && App.setUiLang(ev.target.value); }catch(_){}
+      }, { passive:true });
+    }
+  }catch(_){}
 })();
