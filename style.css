@@ -1076,35 +1076,41 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 
 
 /* ==========================================================================
-   SETTINGS MODAL — FINAL CONSOLIDATED FIX
-   - Make both headings 16/600
-   - Draw divider under toggle via adjacent .sectionDivider (pixel-identical)
-   - Add breathing between divider and "Резервное копирование"
-   - Keep toggle/buttons as-is
+   SETTINGS MODAL — FINAL TOUCH
+   1) Equal spacing: divider under toggle to both headings
+      - Match spacing from top header divider to "Выбор режима" (modalBody padding-top = 14px)
+      - So set bottom margin of the middle divider to 14px
+   2) Backup buttons styled like "Зареєструвати" (btnPill)
    ========================================================================== */
-
-/* 1) Headings */
-#settingsModal .modalBody .settingsSubtitle,
-#settingsModal .modalBody .backupTitle{
-  font-size:16px !important;
-  font-weight:600 !important;
-  line-height:1.3;
-}
-
-/* 2) Divider under toggle (use sibling .sectionDivider, inset 14px) */
-#settingsModal .modalBody #modeToggleWrap::after{ content:none !important; display:none !important; } /* disable old approach */
 #settingsModal .modalBody #modeToggleWrap + .sectionDivider{
   position:relative;
   height:0;
-  margin:10px 0 14px; /* 3) breathing before "Резервное копіювання" */
+  margin:10px 0 14px !important; /* 14px bottom = same as 14px padding-top before first heading */
 }
 #settingsModal .modalBody #modeToggleWrap + .sectionDivider::after{
-  content:"";
-  position:absolute;
-  left:14px; right:14px;
-  height:1px;
-  background:var(--border);
-  transform:translateZ(0);
-  -webkit-transform:translateZ(0);
+  content:""; position:absolute; left:14px; right:14px; height:1px; background:var(--border);
+  transform:translateZ(0); -webkit-transform:translateZ(0);
+}
+
+/* Buttons = btnPill */
+#settingsModal #backupSection .btn{
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  box-shadow: none;
+  padding: 8px 16px;
+}
+#settingsModal #backupSection .btn:hover{
+  background: rgba(0,0,0,0.05);
+}
+#settingsModal #backupSection .btn:disabled{
+  opacity: .6;
+  background: var(--card);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  cursor: default;
 }
 /* ========================================================================== */
