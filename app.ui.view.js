@@ -91,7 +91,7 @@
         }
       }
 
-      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
+      const t = (typeof App.i18n === 'function') ? App.i18n() : { badgeSetWords:'Слов в наборе', badgeLearned:'Выучено' };
       host.textContent = (t.badgeSetWords||'Слов в наборе') + ': ' + String(total) + ' / ' + (t.badgeLearned||'Выучено') + ': ' + String(learned);
     }catch(_){}
   }
@@ -157,7 +157,7 @@
 
   function addIDontKnowButton() {
     if (!D || !D.optionsRow) return;
-    const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
+    const t = (typeof App.i18n === 'function') ? App.i18n() : { iDontKnow: 'Не знаю' };
     const wrap = document.createElement('div');
     wrap.className = 'idkWrapper';
     const btn = document.createElement('button');
@@ -688,7 +688,7 @@ function renderDictList() {
     const name = document.createElement('div');
     name.className = 'dictName';
     if (key === 'mistakes') {
-      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
+      const t = (typeof App.i18n === 'function') ? App.i18n() : null;
       name.textContent = (t && t.mistakesName) ? t.mistakesName : 'Мои ошибки';
     } else if (key === 'fav' || key === 'favorites') {
       name.textContent = (App.settings.lang === 'ru') ? 'Избранное' : 'Обране'; try{ App.applyI18nTitles(document); }catch(_){}
@@ -984,7 +984,7 @@ renderDictList();
 
   function fillFromI18n(){
     try{
-      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
+      const t = (typeof App.i18n==='function') ? (App.i18n()||{}) : {};
       if (titleEl && t.infoTitle) titleEl.textContent = t.infoTitle;
       if (Array.isArray(t.infoSteps) && contentEl){
         const ul = document.createElement('ul');
@@ -1035,67 +1035,19 @@ renderDictList();
 
   function fillFromI18n(){
     try{
-      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
-  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
-
-      if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
-      if (contentEl){
-        const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
-        if (normalEl && t.modeNormal) normalEl.textContent = String(t.modeNormal);
-        const hardEl = contentEl.querySelector('[data-i18n="modeHard"]');
-        if (hardEl && t.modeHard) hardEl.textContent = String(t.modeHard);
-
-        const text = (t.settingsInDev!=null) ? String(t.settingsInDev) : '';
-        (function(){
-          const sel = '[data-i18n="settingsInDev"]';
-          let p = contentEl.querySelector(sel);
-          if (!p && text && String(text).trim().length){
-            p = document.createElement('p');
-            p.setAttribute('data-i18n','settingsInDev');
-            contentEl.prepend(p);
-          }
-          p.textContent = text;
-        })();
-      }
-    }catch(_){}
-  }
-  function open(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
-  function close(){ try{ modal.classList.add('hidden'); }catch(_){} }
-
-  btn.addEventListener('click', open, { passive:true });
-  if (closeEl) closeEl.addEventListener('click', close, { passive:true });
-  if (okEl) okEl.addEventListener('click', close, { passive:true });
-  modal.addEventListener('click', function(e){ if (e.target===modal) close(); }, { passive:true });
-
-  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', fillFromI18n);
-  else fillFromI18n();
-})();
-
-;(function(){
-  var modal   = document.getElementById('infoModal');
-  if (!modal) return;
-
-  var okBtn   = modal.querySelector('#infoOk');
-  var xBtn    = modal.querySelector('#infoClose');
-  var titleEl = modal.querySelector('#infoTitle');
-  var bodyEl  = modal.querySelector('#infoContent');
-  var infoBtn = document.getElementById('btnInfo');
-
-  function t(){ try{ return (typeof App!=='undefined' && typeof App.i18n==='function') ? (App.i18n()||{}) : {}; }catch(_){ return {}; } }
-
-  function fill(){
-    var tr = t();
-    if (titleEl && tr.infoTitle) titleEl.textContent = tr.infoTitle;
-    if (okBtn) okBtn.textContent = tr.ok || 'OK';
-    if (infoBtn && tr.infoTitle) infoBtn.title = tr.infoTitle; // тултип «Инструкция»
-    if (Array.isArray(tr.infoSteps) && bodyEl){
-      bodyEl.innerHTML = '<ul>' + tr.infoSteps.map(function(s){ return '<li>'+String(s||'')+'</li>'; };
-  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fill(); }catch(_){} });
-).join('') + '</ul>';
+      const t = (typeof App.i18n==='function') ? (App.i18n()||{}; 
     }
   }
   function open(){ fill(); modal.classList.remove('hidden'); }
-      window.addEventListener('lexi:lang-changed', function(){ try{ renderAboutDynamic(); }catch(_){} });
+/*__info_listener_fixed__*/
+try{
+  if(!window.__lex_info_fill_hooked){
+    window.__lex_info_fill_hooked=true;
+    document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fill(); }catch(_){ } });
+  }
+}catch(_){ }
+
+      
 function close(){ modal.classList.add('hidden'); }
 
   if (infoBtn) infoBtn.addEventListener('click', open);
@@ -1103,7 +1055,8 @@ function close(){ modal.classList.add('hidden'); }
   if (xBtn)    xBtn.addEventListener('click', close);
   modal.addEventListener('click', function(e){ if (e.target === modal) close(); });
 
-  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', fill, { once: true }); } else { fill(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fill, {once:true});
+  else fill();
 })();
 
 /*!
@@ -1224,7 +1177,7 @@ function close(){ modal.classList.add('hidden'); }
     try{
       const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{};
   document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
-
+) : {};
       if (titleEl && t.donateTitle)  titleEl.textContent = String(t.donateTitle);
       if (contentEl && t.donateText){
         const p = contentEl.querySelector('p');
@@ -1240,7 +1193,8 @@ function close(){ modal.classList.add('hidden'); }
   if (okEl)    okEl.addEventListener('click', close, { passive:true });
   modal.addEventListener('click', function(e){ if (e.target===modal) close(); }, { passive:true });
 
-  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', fillFromI18n, { once: true }); } else { fillFromI18n(); }
+  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', fillFromI18n, {once:true});
+  else fillFromI18n();
 })();
 
 ;(function(){
@@ -1339,7 +1293,6 @@ if (document.readyState === 'loading') {
     syncFromSettings();
   }
 })();
-
 ;(function(){
   const App = window.App || (window.App = {});
   App.showConfirmModal = function(opts){
@@ -1354,7 +1307,7 @@ if (document.readyState === 'loading') {
         const okBtn = document.getElementById('confirmOk');
         const cancelBtn = document.getElementById('confirmCancel');
         const closeBtn = document.getElementById('confirmClose');
-        const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
+        const t = (typeof App.i18n==='function') ? App.i18n() : null;
 
         titleEl.textContent = opts.title || (t && t.confirmTitle) || 'Подтверждение';
         textEl.textContent = opts.text || (t && t.confirmText) || 'Вы уверены?';
