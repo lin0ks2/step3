@@ -975,7 +975,7 @@ renderDictList();
   }
 })();
 
-// === Info modal =============================================================
+// === Info modal (clean) =====================================================
 ;(function () {
   const infoBtn   = document.getElementById('btnInfo');
   const modal     = document.getElementById('infoModal');
@@ -989,93 +989,98 @@ renderDictList();
   function fillFromI18n() {
     try {
       const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
-
       if (titleEl && t.infoTitle) titleEl.textContent = String(t.infoTitle);
-
       if (Array.isArray(t.infoSteps) && contentEl) {
         contentEl.innerHTML =
-          '<ul>' +
-          t.infoSteps.map(function (s) {
+          '<ul>' + t.infoSteps.map(function (s) {
             return '<li>' + String(s || '') + '</li>';
-          }).join('') +
-          '</ul>';
+          }).join('') + '</ul>';
       }
-
       if (okBtn && t.ok) okBtn.textContent = String(t.ok);
     } catch (_) {}
   }
 
-  function openInfo () { try { fillFromI18n(); modal.classList.remove('hidden'); } catch (_) {} }
-  function closeInfo()  { try { modal.classList.add('hidden');   } catch (_) {} }
+  function openInfo(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
+  function closeInfo(){ try{ modal.classList.add('hidden'); }catch(_){} }
 
-  if (infoBtn) infoBtn.addEventListener('click', openInfo,  { passive: true });
-  if (closeEl) closeEl.addEventListener('click', closeInfo, { passive: true });
-  modal.addEventListener('click', function (e) { if (e.target === modal) closeInfo(); }, { passive: true });
+  if (infoBtn) infoBtn.addEventListener('click', openInfo, { passive:true });
+  if (closeEl) closeEl.addEventListener('click', closeInfo, { passive:true });
+  modal.addEventListener('click', function(e){ if (e.target===modal) closeInfo(); }, { passive:true });
 
   try {
     if (!window.__lex_info_fill_hooked) {
       window.__lex_info_fill_hooked = true;
-      document.addEventListener('lexitron:ui-lang-changed', function () {
-        try { fillFromI18n(); } catch (_) {}
-      });
+      document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
     }
-  } catch (_) {}
+  } catch (_){}
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', fillFromI18n, { once: true });
-  } else {
+  if (document.readyState === 'loading');
+    document.addEventListener('DOMContentLoaded', fillFromI18n, { once:true });
+  else
     fillFromI18n();
-  }
 })();
 
-;(function(){
-  const btn   = document.getElementById('btnSettings');
+// === Settings modal (clean) =================================================
+;(function () {
+  const btn   = document.getElementById('btnSettings') || document.getElementById('settingsBtn');
   const modal = document.getElementById('settingsModal');
-  if (!btn || !modal) return;
+  if (!modal) return;
+
   const titleEl   = document.getElementById('settingsTitle');
   const contentEl = document.getElementById('settingsContent');
   const closeEl   = document.getElementById('settingsClose');
   const okEl      = document.getElementById('settingsOk');
 
   const toggleEl  = document.getElementById('modeToggle');
-  if (toggleEl) toggleEl.addEventListener('change', function(){ try{ App.applyFromUI && App.applyFromUI(); }catch(e){} });
+  if (toggleEl) {
+    toggleEl.addEventListener('change', function(){
+      try{ App && App.applyFromUI && App.applyFromUI(); }catch(_){}
+    });
+  }
 
   function fillFromI18n(){
     try{
-      const t = (typeof App.i18n==='function') ? (App.i18n()||{};
-  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
-) : {};
+      const t = (typeof App.i18n==='function') ? (App.i18n()||{}) : {};
       if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
       if (contentEl){
         const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
+        const hardEl   = contentEl.querySelector('[data-i18n="modeHard"]');
         if (normalEl && t.modeNormal) normalEl.textContent = String(t.modeNormal);
-        const hardEl = contentEl.querySelector('[data-i18n="modeHard"]');
-        if (hardEl && t.modeHard) hardEl.textContent = String(t.modeHard);
-
+        if (hardEl   && t.modeHard)   hardEl.textContent   = String(t.modeHard);
+        // optional note
         const text = (t.settingsInDev!=null) ? String(t.settingsInDev) : '';
-        (function(){
-          const sel = '[data-i18n="settingsInDev"]';
-          let p = contentEl.querySelector(sel);
-          if (!p && text && String(text).trim().length){
-            p = document.createElement('p');
-            p.setAttribute('data-i18n','settingsInDev');
-            contentEl.prepend(p);
-          }
-          p.textContent = text;
-        })();
+        let p = contentEl.querySelector('[data-i18n="settingsInDev"]');
+        if (!p && text && text.trim().length){
+          p = document.createElement('p');
+          p.setAttribute('data-i18n','settingsInDev');
+          contentEl.prepend(p);
+        }
+        if (p) p.textContent = text;
       }
+      if (okEl)    okEl.textContent    = String((App.i18n()||{}).ok || 'OK');
+      if (closeEl) closeEl.textContent = String((App.i18n()||{}).close || 'Close');
     }catch(_){}
   }
+
   function open(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
   function close(){ try{ modal.classList.add('hidden'); }catch(_){} }
 
-  btn.addEventListener('click', open, { passive:true });
-  if (closeEl) closeEl.addEventListener('click', close, { passive:true });
-  if (okEl) okEl.addEventListener('click', close, { passive:true });
+  if (btn)    btn   .addEventListener('click', open, { passive:true });
+  if (closeEl)closeEl.addEventListener('click', close, { passive:true });
+  if (okEl)   okEl  .addEventListener('click', close, { passive:true });
   modal.addEventListener('click', function(e){ if (e.target===modal) close(); }, { passive:true });
 
-  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', fillFromI18n);
-  else fillFromI18n();
+  try {
+    if (!window.__lex_settings_fill_hooked) {
+      window.__lex_settings_fill_hooked = true;
+      document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
+    }
+  } catch (_){}
+
+  if (document.readyState === 'loading');
+    document.addEventListener('DOMContentLoaded', fillFromI18n, { once:true });
+  else
+    fillFromI18n();
 })();
 
 ;(function(){
@@ -1218,10 +1223,11 @@ function close(){ modal.classList.add('hidden'); }
 
 })();
 
+// === Donate modal (clean) ===================================================
 ;(function(){
   const btn   = document.getElementById('btnDonate');
   const modal = document.getElementById('donateModal');
-  if (!btn || !modal) return;
+  if (!modal) return;
 
   const titleEl   = document.getElementById('donateTitle');
   const contentEl = document.getElementById('donateContent');
@@ -1230,26 +1236,35 @@ function close(){ modal.classList.add('hidden'); }
 
   function fillFromI18n(){
     try{
-      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{};
-  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
-) : {};
+      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{}) : {};
       if (titleEl && t.donateTitle)  titleEl.textContent = String(t.donateTitle);
       if (contentEl && t.donateText){
         const p = contentEl.querySelector('p');
         if (p) p.textContent = String(t.donateText);
       }
+      if (okEl) okEl.textContent = String(t.ok || 'OK');
     }catch(_){}
   }
   function open(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
   function close(){ try{ modal.classList.add('hidden'); }catch(_){} }
 
-  btn.addEventListener('click', function(e){ try{ e.preventDefault(); e.stopPropagation(); }catch(_){ } open(); }, { passive:false });
+  const openHandler = function(e){ try{ e.preventDefault(); e.stopPropagation(); }catch(_){ } open(); };
+  if (btn) btn.addEventListener('click', openHandler, { passive:false });
   if (closeEl) closeEl.addEventListener('click', close, { passive:true });
   if (okEl)    okEl.addEventListener('click', close, { passive:true });
   modal.addEventListener('click', function(e){ if (e.target===modal) close(); }, { passive:true });
 
-  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', fillFromI18n, {once:true});
-  else fillFromI18n();
+  try {
+    if (!window.__lex_donate_fill_hooked) {
+      window.__lex_donate_fill_hooked = true;
+      document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
+    }
+  } catch (_){}
+
+  if (document.readyState==='loading');
+    document.addEventListener('DOMContentLoaded', fillFromI18n, {once:true});
+  else
+    fillFromI18n();
 })();
 
 ;(function(){
