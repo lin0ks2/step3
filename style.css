@@ -442,14 +442,7 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   height: 36px;
   border-radius:12px;
 }/* Mode toggle — iOS-like switch */
-#modeToggleWrap{
-  user-select:none;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:100%;
-  text-align:center;
-}#modeToggleWrap label{ gap:12px }#modeToggleWrap #modeToggle{
+#modeToggleWrap{ user-select:none }#modeToggleWrap label{ gap:12px }#modeToggleWrap #modeToggle{
   appearance: none;
   position: relative;
   width: 54px; height: 30px;
@@ -996,10 +989,8 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
   text-align: left;
 }
 
-.modalBody #modeToggleWrap + .sectionDivider{
-  position:relative;
-  height:0;
-  margin:12px 0 10px;
+.modalBody #modeToggleWrap + .sectionDivider {
+  margin: 12px 0 10px;
 }
 
 .modalBody #backupSection .btnRow {
@@ -1026,72 +1017,16 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
   margin-top:8px;
 }
 
-.modalBody .backupTitle{
-  font-size:16px;
-  font-weight:600;
-  line-height:1.25;
-  margin:0 0 10px;
-  text-align:left;
-}
 
-#modeToggleWrap .switchLabel{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-#backupSection .btn{
-  background:var(--idk-bg);
-  border:1px solid var(--border);
-  color:var(--idk-fg);
-  margin-top:6px; height:42px; padding:0 16px;
-  border-radius:12px; font-size:15px; font-weight:600;
-  display:flex; align-items:center; justify-content:center; box-shadow:none;
-  will-change: transform, filter;
-}
-
-#backupSection .btn:hover{
-  filter:brightness(1.06);
-}
-
-#backupSection .btn:focus, #backupSection .btn:focus-visible{
-  outline:none; box-shadow:0 0 0 3px var(--focus-ring);
-}
-
-#backupSection .btn:active{
-  transform: translateY(1px);
-}
-
-[data-theme="dark"] #backupSection .btn{
-  background:#111827; color:var(--text); border:1px solid #374151; box-shadow:none;
-}
-
-.modalBody #modeToggleWrap::after{
-  content:none;
-}
-
-.modalBody #modeToggleWrap + .sectionDivider::after{
-  content:"";
-  position:absolute;
-  left:0; right:0;
-  height:1px;
-  background:var(--border);
-  transform:translateZ(0);
-  -webkit-transform:translateZ(0);
-}
-
-.modalBody #modeToggleWrap + .sectionDivider + #backupSection .settingsSubtitle{
-  margin-top:8px;
-}
-
-#settingsModal .modalBody .backupTitle{
-  font-size:16px !important;
-  font-weight:600 !important;
-  line-height:1.25;
-  margin:0 0 10px;
-  text-align:left;
-}
-
+/* ==========================================================================
+   LEXITRON · SETTINGS MODAL — CONSOLIDATED FIXES (final, scoped)
+   - Headings font + weight
+   - Center the toggle row
+   - True divider under toggle (pseudo-element, same insets as header/footer)
+   - Backup buttons identical to "Не знаю"
+   Everything is scoped to #settingsModal to avoid global side-effects.
+   ========================================================================== */
+#settingsModal .modalBody .backupTitle,
 #settingsModal .modalBody .settingsSubtitle{
   font-size:16px !important;
   font-weight:600 !important;
@@ -1100,6 +1035,7 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
   text-align:left;
 }
 
+/* Toggle row centered */
 #settingsModal #modeToggleWrap{
   user-select:none;
   display:flex;
@@ -1108,55 +1044,53 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
   width:100%;
   text-align:center;
 }
-
 #settingsModal #modeToggleWrap .switchLabel{
   display:flex;
   align-items:center;
   gap:12px;
 }
 
+/* Divider right under the toggle, pixel-perfect like header/footer */
 #settingsModal .modalBody #modeToggleWrap + .sectionDivider{
   position:relative;
   height:0;
   margin:10px 0 12px;
 }
-
 #settingsModal .modalBody #modeToggleWrap + .sectionDivider::after{
   content:"";
   position:absolute;
-  left:14px; right:14px;
+  left:14px; right:14px;          /* same horizontal insets as .modalHeader::after */
   height:1px;
   background:var(--border);
   transform:translateZ(0);
   -webkit-transform:translateZ(0);
 }
 
-#settingsModal .modalBody #modeToggleWrap + .sectionDivider + #backupSection .settingsSubtitle{
-  margin-top: 8px !important;
-}
-
+/* Backup buttons = identical to "Не знаю" (button.ghost) */
 #settingsModal #backupSection .btn{
   background:var(--idk-bg);
   border:1px solid var(--border);
   color:var(--idk-fg);
-  margin-top:6px; height:42px; padding:0 16px;
-  border-radius:12px; font-size:15px; font-weight:600;
-  display:flex; align-items:center; justify-content:center; box-shadow:none;
-  will-change: transform, filter;
+  margin-top:6px;
+  height:42px;
+  padding:0 16px;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:none;
+  will-change:transform, filter;
 }
-
-#settingsModal #backupSection .btn:hover{
-  filter:brightness(1.06);
-}
-
-#settingsModal #backupSection .btn:focus, #settingsModal #backupSection .btn:focus-visible{
-  outline:none; box-shadow:0 0 0 3px var(--focus-ring);
-}
-
-#settingsModal #backupSection .btn:active{
-  transform: translateY(1px);
-}
-
+#settingsModal #backupSection .btn:hover{ filter:brightness(1.06); }
+#settingsModal #backupSection .btn:focus,
+#settingsModal #backupSection .btn:focus-visible{ outline:none; box-shadow:0 0 0 3px var(--focus-ring); }
+#settingsModal #backupSection .btn:active{ transform:translateY(1px); }
 [data-theme="dark"] #settingsModal #backupSection .btn{
-  background:#111827; color:var(--text); border:1px solid #374151; box-shadow:none;
+  background:#111827;
+  color:var(--text);
+  border:1px solid #374151;
+  box-shadow:none;
 }
+/* ========================================================================== */
