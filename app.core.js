@@ -182,6 +182,28 @@ App.saveState = function(){
     dictListHost:document.getElementById('dictList')
   };
 
+/* i18n strict mode boot */
+const DEFAULT_UI_LANG = 'uk';
+var DEBUG_I18N = true;
+function detectDefaultLang() {
+  try {
+    const sys = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    if (sys.startsWith('ru')) return 'ru';
+    if (sys.startsWith('uk') || sys.startsWith('ua')) return 'uk';
+  } catch(_) {}
+  return DEFAULT_UI_LANG;
+}
+try {
+  if (!App.settings) App.settings = {};
+  if (!App.settings.uiLang) {
+    const stored = (()=>{try{return localStorage.getItem('uiLang')}catch(_){return null}})();
+    App.settings.uiLang = stored || detectDefaultLang();
+    try { localStorage.setItem('uiLang', App.settings.uiLang); } catch(_) {}
+  }
+} catch(_){}
+/* end i18n strict mode boot */
+
+
   try{
     function __uiLang(){ try{ return (App.settings && (App.settings.uiLang||App.settings.lang)) || 'uk'; }catch(_){ return 'uk'; } }
     const L = __uiLang();
@@ -366,3 +388,12 @@ try{
   else document.addEventListener('DOMContentLoaded', function(){ try{ App.applyI18nTitles(); }catch(_){
   } });
 }catch(_){}
+
+/* i18n strict: core pack/T */
+function pack(){ return (typeof I18N!=='undefined' && I18N[App.settings.uiLang]) || {}; }
+function T(key){
+  const p = pack();
+  const v = p[key];
+  if (DEBUG_I18N && (v === undefined)) { try{ console.warn('[i18n] missing:', key, 'lang=', App.settings.uiLang); }catch(_){} }
+  return v || '';
+}
