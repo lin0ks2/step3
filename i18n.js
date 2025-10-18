@@ -144,9 +144,6 @@ settingsTitle: "Налаштування",
     }
   } catch(_) {}
 
-      modeSelection: "Вибір\ режиму",
-      backupTitle: "Резервне\ копіювання",
-      close: "Закрити",
 })();
 
 (function(){
