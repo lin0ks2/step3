@@ -1010,7 +1010,7 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 }
 
 .modalBody .settingsSubtitle{
-  font-size:14px;
+  font-size:16px;
   font-weight:600;
   line-height:1.25;
   margin:0 0 10px;
@@ -1027,7 +1027,7 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 }
 
 .modalBody .backupTitle{
-  font-size:14px;
+  font-size:16px;
   font-weight:600;
   line-height:1.25;
   margin:0 0 10px;
@@ -1078,4 +1078,8 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
   background:var(--border);
   transform:translateZ(0);
   -webkit-transform:translateZ(0);
+}
+
+.modalBody #modeToggleWrap + .sectionDivider + #backupSection .settingsSubtitle{
+  margin-top:8px;
 }
