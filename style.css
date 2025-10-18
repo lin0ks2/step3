@@ -442,7 +442,14 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   height: 36px;
   border-radius:12px;
 }/* Mode toggle — iOS-like switch */
-#modeToggleWrap label{ gap:12px }#modeToggleWrap #modeToggle{
+#modeToggleWrap{
+  user-select:none;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  text-align:center;
+}#modeToggleWrap label{ gap:12px }#modeToggleWrap #modeToggle{
   appearance: none;
   position: relative;
   width: 54px; height: 30px;
@@ -989,106 +996,109 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
   text-align: left;
 }
 
+.modalBody #modeToggleWrap + .sectionDivider{
+  position:relative;
+  height:0;
+  margin:12px 0 10px;
+}
 
+.modalBody #backupSection .btnRow {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap, 12px);
+  margin-top: 8px;
+}
 
-.modalBody 
-
-
+.modalBody .settingsSubtitle{
+  font-size:16px;
+  font-weight:600;
+  line-height:1.25;
+  margin:0 0 10px;
+  text-align:left;
+}
 .modalBody .settingsDividerBelowToggle{
   margin:12px 0 10px;
 }
-.modalBody 
-
-
-
-
-
-
-
-
-
-#backupSection .btn:focus, 
-
-
-
-[data-theme="dark"] 
-
-.modalBody #modeToggleWrap::after{
-  content:none;
-}
-
-
-
-.modalBody #modeToggleWrap + .sectionDivider + #backupSection .settingsSubtitle{
+.modalBody #backupSection .btnRow{
+  display:flex;
+  justify-content:center;
+  gap:var(--gap,12px);
   margin-top:8px;
 }
 
-
-/* ==========================================================================
-   LEXITRON · SETTINGS MODAL — CONSOLIDATED (deduped)
-   ========================================================================== */
-
-/* Headings */
-#settingsModal .modalBody .backupTitle,
-#settingsModal .modalBody .settingsSubtitle{
+.modalBody .backupTitle{
   font-size:16px;
   font-weight:600;
-  line-height:1.3;
+  line-height:1.25;
   margin:0 0 10px;
   text-align:left;
 }
 
-/* Toggle centered */
-#settingsModal #modeToggleWrap{
-  user-select:none;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:100%;
-  text-align:center;
-}
-#settingsModal #modeToggleWrap .switchLabel{
+#modeToggleWrap .switchLabel{
   display:flex;
   align-items:center;
   gap:12px;
 }
 
-/* Divider under toggle = pixel-identical */
-#settingsModal .modalBody #modeToggleWrap + .sectionDivider{
-  position:relative;
-  height:0;
-  margin:10px 0 14px;
+#backupSection .btn{
+  background:var(--idk-bg);
+  border:1px solid var(--border);
+  color:var(--idk-fg);
+  margin-top:6px; height:42px; padding:0 16px;
+  border-radius:12px; font-size:15px; font-weight:600;
+  display:flex; align-items:center; justify-content:center; box-shadow:none;
+  will-change: transform, filter;
 }
-#settingsModal .modalBody #modeToggleWrap + .sectionDivider::after{
+
+#backupSection .btn:hover{
+  filter:brightness(1.06);
+}
+
+#backupSection .btn:focus, #backupSection .btn:focus-visible{
+  outline:none; box-shadow:0 0 0 3px var(--focus-ring);
+}
+
+#backupSection .btn:active{
+  transform: translateY(1px);
+}
+
+[data-theme="dark"] #backupSection .btn{
+  background:#111827; color:var(--text); border:1px solid #374151; box-shadow:none;
+}
+
+.modalBody #modeToggleWrap::after{
+  content:none;
+}
+
+.modalBody #modeToggleWrap + .sectionDivider::after{
   content:"";
   position:absolute;
-  left:14px; right:14px;
+  left:0; right:0;
   height:1px;
   background:var(--border);
   transform:translateZ(0);
   -webkit-transform:translateZ(0);
 }
 
-/* Backup buttons = btnPill (like "Register") */
-#settingsModal #backupSection .btn{
-  background: var(--card);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 500;
-  box-shadow: none;
-  padding: 8px 16px;
-}
-#settingsModal #backupSection .btn:hover{
-  background: rgba(0,0,0,0.05);
-}
-#settingsModal #backupSection .btn:disabled{
-  opacity: .6;
-  background: var(--card);
-  color: var(--muted);
-  border: 1px solid var(--border);
-  cursor: default;
+.modalBody #modeToggleWrap + .sectionDivider + #backupSection .settingsSubtitle{
+  margin-top:8px;
 }
 
-/* ========================================================================== */
+#settingsModal #backupSection .btnRow{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap: var(--gap, 14px);
+  flex-wrap: wrap;
+}
+
+#settingsModal .modalBody #modeToggleWrap + .sectionDivider{
+  position:relative;
+  height:0;
+  margin:10px 0 18px;
+}
+
+#settingsModal .modalBody #modeToggleWrap + .sectionDivider::after{
+  content:""; position:absolute; left:14px; right:14px; height:1px; background:var(--border);
+  transform:translateZ(0); -webkit-transform:translateZ(0);
+}
