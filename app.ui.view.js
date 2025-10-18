@@ -91,7 +91,7 @@
         }
       }
 
-      const t = (typeof App.i18n === 'function') ? App.i18n() : { badgeSetWords:'Слов в наборе', badgeLearned:'Выучено' };
+      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
       host.textContent = (t.badgeSetWords||'Слов в наборе') + ': ' + String(total) + ' / ' + (t.badgeLearned||'Выучено') + ': ' + String(learned);
     }catch(_){}
   }
@@ -157,7 +157,7 @@
 
   function addIDontKnowButton() {
     if (!D || !D.optionsRow) return;
-    const t = (typeof App.i18n === 'function') ? App.i18n() : { iDontKnow: 'Не знаю' };
+    const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
     const wrap = document.createElement('div');
     wrap.className = 'idkWrapper';
     const btn = document.createElement('button');
@@ -688,7 +688,7 @@ function renderDictList() {
     const name = document.createElement('div');
     name.className = 'dictName';
     if (key === 'mistakes') {
-      const t = (typeof App.i18n === 'function') ? App.i18n() : null;
+      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
       name.textContent = (t && t.mistakesName) ? t.mistakesName : 'Мои ошибки';
     } else if (key === 'fav' || key === 'favorites') {
       name.textContent = (App.settings.lang === 'ru') ? 'Избранное' : 'Обране'; try{ App.applyI18nTitles(document); }catch(_){}
@@ -984,7 +984,7 @@ renderDictList();
 
   function fillFromI18n(){
     try{
-      const t = (typeof App.i18n==='function') ? (App.i18n()||{}) : {};
+      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
       if (titleEl && t.infoTitle) titleEl.textContent = t.infoTitle;
       if (Array.isArray(t.infoSteps) && contentEl){
         const ul = document.createElement('ul');
@@ -1035,9 +1035,9 @@ renderDictList();
 
   function fillFromI18n(){
     try{
-      const t = (typeof App.i18n==='function') ? (App.i18n()||{};
+      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
   document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
-) : {};
+
       if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
       if (contentEl){
         const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
@@ -1225,7 +1225,7 @@ function close(){ modal.classList.add('hidden'); }
     try{
       const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{};
   document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
-) : {};
+
       if (titleEl && t.donateTitle)  titleEl.textContent = String(t.donateTitle);
       if (contentEl && t.donateText){
         const p = contentEl.querySelector('p');
@@ -1355,7 +1355,7 @@ if (document.readyState === 'loading') {
         const okBtn = document.getElementById('confirmOk');
         const cancelBtn = document.getElementById('confirmCancel');
         const closeBtn = document.getElementById('confirmClose');
-        const t = (typeof App.i18n==='function') ? App.i18n() : null;
+        const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
 
         titleEl.textContent = opts.title || (t && t.confirmTitle) || 'Подтверждение';
         textEl.textContent = opts.text || (t && t.confirmText) || 'Вы уверены?';
