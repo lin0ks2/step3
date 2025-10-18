@@ -37,13 +37,13 @@ App.starKey = function(wid, dk){
     }
   })();
 
-  App.i18n = function(){
-  try{
-    var lang = (App && App.settings && App.settings.uiLang) || 'uk';
-    var base = (window.I18N && window.I18N[lang]) || {};
-    return base;
-  }catch(_){ return {}; }
-};
+  App.i18n = function(lang){
+    try{
+      lang = (lang || (App.settings && (App.settings.uiLang || App.settings.lang)) || 'uk').toLowerCase();
+      const base = (I18N_FALLBACK && I18N_FALLBACK[lang]) ? I18N_FALLBACK[lang] : (I18N_FALLBACK && I18N_FALLBACK.uk) || {};
+      return base;
+    }catch(_){ return (I18N_FALLBACK && I18N_FALLBACK.uk) || {}; }
+  };
 
 App.applyI18nTitles = function(root){
   try{
@@ -65,7 +65,7 @@ App.applyI18nTitles = function(root){
       }catch(_){}
     });
   }catch(_){}
-};
+};;
 
 try{
   if (document.readyState !== 'loading') { App.applyI18nTitles(); }
@@ -181,41 +181,6 @@ App.saveState = function(){
     okBtn:document.getElementById('okBtn'),
     dictListHost:document.getElementById('dictList')
   };
-/*SET_STATIC_APP_TITLE*/
-try{var __t=document.getElementById('title'); if(__t){ __t.textContent='LEXITRON'; }}catch(_){}
-
-
-/* i18n strict mode boot */
-const DEFAULT_UI_LANG = 'uk';
-var DEBUG_I18N = true;
-function detectDefaultLang() {
-  try {
-    const sys = (navigator.language || navigator.userLanguage || '').toLowerCase();
-    if (sys.startsWith('ru')) return 'ru';
-    if (sys.startsWith('uk') || sys.startsWith('ua')) return 'uk';
-  } catch(_) {}
-  return DEFAULT_UI_LANG;
-}
-try {
-  if (!App.settings) App.settings = {};
-  if (!App.settings.uiLang) {
-    const stored = (()=>{try{return localStorage.getItem('uiLang')}catch(_){return null}})();
-    App.settings.uiLang = stored || detectDefaultLang();
-    try { localStorage.setItem('uiLang', App.settings.uiLang); } catch(_) {}
-  }
-} catch(_){}
-/* end i18n strict mode boot */
-
-
-  try{
-    function __uiLang(){ try{ return (App.settings && (App.settings.uiLang||App.settings.lang)) || 'uk'; }catch(_){ return 'uk'; } }
-    const L = __uiLang();
-    const pack = (window.I18N && (I18N[L]||I18N.uk)) || {};
-    const title = (pack && pack.appTitle) || 'Lexitron';
-    const el = document.getElementById('title');
-    if (el && (!el.textContent || el.textContent.trim()==='')) el.textContent = title;
-  }catch(_){}
-
   if (App.DOM.copyYearEl) App.DOM.copyYearEl.textContent = new Date().getFullYear();
 
   App.bootstrap = function(){
@@ -391,25 +356,3 @@ try{
   else document.addEventListener('DOMContentLoaded', function(){ try{ App.applyI18nTitles(); }catch(_){
   } });
 }catch(_){}
-
-/* i18n strict: core pack/T */
-function pack(){ return (typeof I18N!=='undefined' && I18N[App.settings.uiLang]) || {}; }
-function T(key){
-  const p = pack();
-  const v = p[key];
-  if (DEBUG_I18N && (v === undefined)) { try{ console.warn('[i18n] missing:', key, 'lang=', App.settings.uiLang); }catch(_){} }
-  return v || '';
-}
-
-/* i18n strict: setter */
-App.setUiLang = function(lang){
-  try{
-    if (!lang) return;
-    if (!App.settings) App.settings = {};
-    App.settings.uiLang = String(lang).toLowerCase();
-    try{ localStorage.setItem('uiLang', App.settings.uiLang); }catch(_){}
-    try{ document.documentElement.setAttribute('lang', App.settings.uiLang); }catch(_){}
-    try{ document.dispatchEvent(new CustomEvent('lexitron:ui-lang-changed', { detail:{ lang: App.settings.uiLang } })); }catch(_){}
-    try{ App.applyI18nTitles(document); }catch(_){}
-  }catch(_){}
-};

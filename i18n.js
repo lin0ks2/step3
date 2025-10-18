@@ -67,8 +67,7 @@ settingsTitle: "Настройки",
       status: "Статус",
       licensed: "Зарегистрировано",
       notLicensed: "Не зарегистрировано",
-    
-      "footer.copy": "© 2025 Lexitron"},
+    },
 
     uk: {
       appTitle: "Lexitron",
@@ -135,8 +134,8 @@ settingsTitle: "Налаштування",
       status: "Статус",
       licensed: "Зареєстровано",
       notLicensed: "Не зареєстровано",
-    
-      "footer.copy": "© 2025 Lexitron"}};
+    },
+  };
 
   try {
     if (window.App && App.locales) {
