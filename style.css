@@ -1084,3 +1084,9 @@ opacity:.6;
   cursor: default;
 }
 /* ========================================================================== */
+
+
+/* === Fine-tune: spacing between divider and "Резервное копирование" title === */
+#settingsModal .modalBody #modeToggleWrap + .sectionDivider + #backupSection .settingsSubtitle {
+  margin-top: 14px !important;
+}
