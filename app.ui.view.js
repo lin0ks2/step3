@@ -1035,9 +1035,9 @@ renderDictList();
 
   function fillFromI18n(){
     try{
-      const t = (typeof App.i18n==='function') ? (App.i18n()||{}) : {};
-document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
-
+      const t = (typeof App.i18n==='function') ? (App.i18n()||{};
+  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
+) : {};
       if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
       if (contentEl){
         const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
@@ -1200,8 +1200,7 @@ function close(){ modal.classList.add('hidden'); }
     document.addEventListener('DOMContentLoaded',applyFlag,{once:true});
   }else{
     applyFlag();
-  }
-;
+  };
   document.addEventListener('i18n:lang-changed',applyFlag);
   document.addEventListener('lexitron:setup:done',applyFlag);
   document.addEventListener('visibilitychange',function(){
