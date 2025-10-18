@@ -1090,3 +1090,10 @@ opacity:.6;
 #settingsModal .modalBody #modeToggleWrap + .sectionDivider + #backupSection .settingsSubtitle {
   margin-top: 14px !important;
 }
+
+
+/* === Adjust spacing: increase bottom margin of the divider under the toggle === */
+#settingsModal .modalBody #modeToggleWrap + .sectionDivider{
+  margin-bottom: 16px !important; /* was 12px */
+  /* keep position/height from earlier rules */
+}
