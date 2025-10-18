@@ -982,8 +982,8 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 .cursor-pointer{ cursor:pointer; }
 
 .modalBody h3.backupTitle {
-  font-size: 16px !important;
-  font-weight: 600 !important;
+  font-size: 14px;
+  font-weight: 600 ;
   line-height: 1.25;
   margin: 0 0 10px;
   text-align: left;
@@ -1001,7 +1001,7 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 }
 
 .modalBody .settingsSubtitle{
-  font-size:16px;
+  font-size:14px;
   font-weight:600;
   line-height:1.25;
   margin:0 0 10px;
