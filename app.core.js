@@ -181,6 +181,9 @@ App.saveState = function(){
     okBtn:document.getElementById('okBtn'),
     dictListHost:document.getElementById('dictList')
   };
+/*SET_STATIC_APP_TITLE*/
+try{var __t=document.getElementById('title'); if(__t){ __t.textContent='LEXITRON'; }}catch(_){}
+
 
 /* i18n strict mode boot */
 const DEFAULT_UI_LANG = 'uk';

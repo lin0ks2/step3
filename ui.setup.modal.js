@@ -356,3 +356,18 @@ const ui = activeUi() || effectiveLang();
   if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', fill, {once:true});
   else fill();
 })();
+
+/*LIVE_UI_LANG_SWITCH*/
+try{
+  var sel = document.querySelector("select[name='uiLang'], #uiLang, [data-role='uiLang']");
+  if(sel){
+    sel.addEventListener('change', function(ev){
+      var lang = ev.target.value;
+      if(!lang) return;
+      if (!App.settings) App.settings = {};
+      App.settings.uiLang = lang;
+      try{ localStorage.setItem('uiLang', lang); }catch(_){}
+      if (typeof applyI18N==='function') applyI18N(document.body, App.settings.uiLang);
+    });
+  }
+}catch(_){}
