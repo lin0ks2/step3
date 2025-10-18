@@ -42,10 +42,7 @@ App.starKey = function(wid, dk){
        var base = (window.I18N && window.I18N[lang]) || {};
        return base;
   }catch(_){ return {}; }
-};
-      return base;
-    }catch(_){ return (I18N_FALLBACK && I18N_FALLBACK.uk) || {}; }
-  };
+;
 
 App.applyI18nTitles = function(root){
   try{
