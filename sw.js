@@ -1,8 +1,7 @@
-/* sw.js — стабильный service worker для Lexitron */
+/* sw.js — stable */
 const SW_VERSION_FALLBACK = '1.6.9';
 const CACHE_PREFIX = 'lexitron-';
 let CACHE_NAME = CACHE_PREFIX + SW_VERSION_FALLBACK;
-
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     try {
@@ -16,7 +15,6 @@ self.addEventListener('install', (event) => {
     await self.skipWaiting();
   })());
 });
-
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     try {
@@ -27,11 +25,9 @@ self.addEventListener('activate', (event) => {
     await self.clients.claim();
   })());
 });
-
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
-
   if (req.mode === 'navigate') {
     event.respondWith((async () => {
       try {
@@ -49,7 +45,6 @@ self.addEventListener('fetch', (event) => {
     })());
     return;
   }
-
   event.respondWith((async () => {
     const cache = await caches.open(CACHE_NAME);
     const cached = await cache.match(req);

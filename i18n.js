@@ -186,3 +186,12 @@ settingsTitle: "Налаштування",
     if (I.en) I.en.modeSelection = "Mode selection";
   }catch(_){}
 })();
+
+
+// added by patch: default close labels
+if (window && window.App && typeof App === 'object') {
+  try { (App.dict = App.dict||{}); (App.dict.ru = App.dict.ru||{}); (App.dict.uk = App.dict.uk||{});
+    if (!App.dict.ru.close) App.dict.ru.close = 'Закрыть';
+    if (!App.dict.uk.close) App.dict.uk.close = 'Закрити';
+  } catch(_){}
+}
