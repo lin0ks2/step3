@@ -1,20 +1,3 @@
-/* === i18n change helper (once) ============================================ */
-;(function(){
-  var App = (window.App = window.App || {});
-  var _lex_lang_listeners = (App.__langListeners = App.__langListeners || new Set());
-  if (typeof App.onLangChange !== 'function') {
-    App.onLangChange = function(fn){
-      if (typeof fn !== 'function') return;
-      try { fn(); } catch(_){}
-      if (_lex_lang_listeners.has(fn)) return;
-      _lex_lang_listeners.add(fn);
-      document.addEventListener('lexitron:ui-lang-changed', function(){
-        try { fn(); } catch(_){}
-      });
-    };
-  }
-})();
-
 
 ;(function(){
   const App = window.App || (window.App = {});
@@ -990,90 +973,100 @@ renderDictList();
     if (D.backdrop) { D.backdrop.addEventListener('click', () => { closeModal(); }); }
     if (D.favBtn) { D.favBtn.addEventListener('click', toggleFav); }
   }
-})()// === Info modal (clean) =====================================================
-;(function () {
-  const btnInfo   = document.getElementById('btnInfo');
+})();
+
+;(function(){
+  const infoBtn   = document.getElementById('btnInfo');
   const modal     = document.getElementById('infoModal');
   const titleEl   = document.getElementById('infoTitle');
   const contentEl = document.getElementById('infoContent');
   const closeEl   = document.getElementById('infoClose');
-  const okEl      = document.getElementById('infoOk');
-  if (!modal) return;
 
-  function fillFromI18n() {
-    try {
-      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
-      if (titleEl && t.infoTitle) titleEl.textContent = String(t.infoTitle);
-      if (Array.isArray(t.infoSteps)) {
-        contentEl.innerHTML =
-          '<ul>' + t.infoSteps.map(function (s) {
-            return '<li>' + String(s || '') + '</li>';
-          }).join('') + '</ul>';
+  function fillFromI18n(){
+    try{
+      const t = (typeof App.i18n==='function') ? (App.i18n()||{}) : {};
+      if (titleEl && t.infoTitle) titleEl.textContent = t.infoTitle;
+      if (Array.isArray(t.infoSteps) && contentEl){
+        const ul = document.createElement('ul');
+        t.infoSteps.forEach(function(s){ const li=document.createElement('li'); li.textContent=String(s||''); ul.appendChild(li); });
+        contentEl.appendChild(ul);
       }
-      if (okEl && t.ok)     okEl.textContent    = String(t.ok);
-      if (closeEl && t.close) closeEl.textContent = String(t.close);
-    } catch (_) {}
+
+      (function(){
+        try{
+          const msEl = contentEl && contentEl.querySelector('[data-i18n="modeSelection"]');
+          if (msEl && t.modeSelection) msEl.textContent = String(t.modeSelection);
+          const bTitle = contentEl && contentEl.querySelector('[data-i18n="backupTitle"]');
+          if (bTitle && t.backupTitle) bTitle.textContent = String(t.backupTitle);
+          const expBtn = document.getElementById('btnBackupExport');
+          if (expBtn && t.backupExport) expBtn.textContent = String(t.backupExport);
+          const impBtn = document.getElementById('btnBackupImport');
+          if (impBtn && t.backupImport) impBtn.textContent = String(t.backupImport);
+          const mN = contentEl && contentEl.querySelector('[data-i18n="modeNormal"]');
+          if (mN && t.modeNormal) mN.textContent = String(t.modeNormal);
+          const mH = contentEl && contentEl.querySelector('[data-i18n="modeHard"]');
+          if (mH && t.modeHard) mH.textContent = String(t.modeHard);
+        }catch(_){}
+      })();
+    }catch(_){}
   }
+  function openInfo(){ try{ fillFromI18n(); modal && modal.classList.remove('hidden'); }catch(_){} }
+  function closeInfo(){ try{ modal && modal.classList.add('hidden'); }catch(_){} }
 
-  function openInfo(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
-  function closeInfo(){ try{ modal.classList.add('hidden'); }catch(_){} }
-
-  if (btnInfo) btnInfo.addEventListener('click', openInfo, { passive:true });
-  if (okEl)    okEl   .addEventListener('click', closeInfo, { passive:true });
+  if (infoBtn) infoBtn.addEventListener('click', openInfo, { passive:true });
   if (closeEl) closeEl.addEventListener('click', closeInfo, { passive:true });
-  modal.addEventListener('click', function(e){ if (e.target===modal) closeInfo(); }, { passive:true });
+  if (modal) modal.addEventListener('click', function(e){ if (e.target===modal) closeInfo(); }, { passive:true });
 
-  App.onLangChange(fillFromI18n);
-})();()// === Settings modal (clean) =================================================
-;(function () {
-  const btn   = document.getElementById('btnSettings') || document.getElementById('settingsBtn');
+  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', fillFromI18n);
+  else fillFromI18n();
+})();
+
+;(function(){
+  const btn   = document.getElementById('btnSettings');
   const modal = document.getElementById('settingsModal');
-  if (!modal) return;
-
+  if (!btn || !modal) return;
   const titleEl   = document.getElementById('settingsTitle');
   const contentEl = document.getElementById('settingsContent');
   const closeEl   = document.getElementById('settingsClose');
   const okEl      = document.getElementById('settingsOk');
 
   const toggleEl  = document.getElementById('modeToggle');
-  if (toggleEl) {
-    toggleEl.addEventListener('change', function(){
-      try{ App && App.applyFromUI && App.applyFromUI(); }catch(_){}
-    });
-  }
+  if (toggleEl) toggleEl.addEventListener('change', function(){ try{ App.applyFromUI && App.applyFromUI(); }catch(e){} });
 
   function fillFromI18n(){
     try{
       const t = (typeof App.i18n==='function') ? (App.i18n()||{}) : {};
       if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
       if (contentEl){
-        const selTitle = contentEl.querySelector('[data-i18n="modeSelection"]');
         const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
-        const hardEl   = contentEl.querySelector('[data-i18n="modeHard"]');
-        const backup   = contentEl.querySelector('[data-i18n="backupTitle"]');
-        const exportEl = contentEl.querySelector('[data-i18n="export"]');
-        const importEl = contentEl.querySelector('[data-i18n="import"]');
-        if (selTitle && t.modeSelection) selTitle.textContent = String(t.modeSelection);
-        if (normalEl && t.modeNormal)   normalEl.textContent = String(t.modeNormal);
-        if (hardEl   && t.modeHard)     hardEl.textContent   = String(t.modeHard);
-        if (backup   && t.backupTitle)  backup.textContent   = String(t.backupTitle);
-        if (exportEl && t.export)       exportEl.textContent = String(t.export);
-        if (importEl && t.import)       importEl.textContent = String(t.import);
+        if (normalEl && t.modeNormal) normalEl.textContent = String(t.modeNormal);
+        const hardEl = contentEl.querySelector('[data-i18n="modeHard"]');
+        if (hardEl && t.modeHard) hardEl.textContent = String(t.modeHard);
+
+        const text = (t.settingsInDev!=null) ? String(t.settingsInDev) : '';
+        (function(){
+          const sel = '[data-i18n="settingsInDev"]';
+          let p = contentEl.querySelector(sel);
+          if (!p && text && String(text).trim().length){
+            p = document.createElement('p');
+            p.setAttribute('data-i18n','settingsInDev');
+            contentEl.prepend(p);
+          }
+          p.textContent = text;
+        })();
       }
-      if (okEl && t.ok)       okEl.textContent    = String(t.ok);
-      if (closeEl && t.close) closeEl.textContent = String(t.close);
     }catch(_){}
   }
-
   function open(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
   function close(){ try{ modal.classList.add('hidden'); }catch(_){} }
 
-  if (btn)    btn   .addEventListener('click', open,  { passive:true });
-  if (closeEl)closeEl.addEventListener('click', close, { passive:true });
-  if (okEl)   okEl  .addEventListener('click', close, { passive:true });
+  btn.addEventListener('click', open, { passive:true });
+  if (closeEl) closeEl.addEventListener('click', close, { passive:true });
+  if (okEl) okEl.addEventListener('click', close, { passive:true });
   modal.addEventListener('click', function(e){ if (e.target===modal) close(); }, { passive:true });
 
-  App.onLangChange(fillFromI18n);
+  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', fillFromI18n);
+  else fillFromI18n();
 })();
 
 ;(function(){
