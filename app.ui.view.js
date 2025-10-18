@@ -1035,9 +1035,9 @@ renderDictList();
 
   function fillFromI18n(){
     try{
-      const t = (typeof App.i18n==='function') ? (App.i18n()||{}
-  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
-) : {};
+      const t = (typeof App.i18n==='function') ? (App.i18n()||{}) : {};
+document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
+
       if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
       if (contentEl){
         const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
@@ -1089,7 +1089,7 @@ renderDictList();
     if (okBtn) okBtn.textContent = tr.ok || 'OK';
     if (infoBtn && tr.infoTitle) infoBtn.title = tr.infoTitle; // тултип «Инструкция»
     if (Array.isArray(tr.infoSteps) && bodyEl){
-      bodyEl.innerHTML = '<ul>' + tr.infoSteps.map(function(s){ return '<li>'+String(s||'')+'</li>'; }
+      bodyEl.innerHTML = '<ul>' + tr.infoSteps.map(function(s){ return '<li>'+String(s||'')+'</li>'; };
   document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fill(); }catch(_){} });
 ).join('') + '</ul>';
     }
@@ -1201,7 +1201,7 @@ function close(){ modal.classList.add('hidden'); }
   }else{
     applyFlag();
   }
-
+;
   document.addEventListener('i18n:lang-changed',applyFlag);
   document.addEventListener('lexitron:setup:done',applyFlag);
   document.addEventListener('visibilitychange',function(){
@@ -1224,7 +1224,7 @@ function close(){ modal.classList.add('hidden'); }
 
   function fillFromI18n(){
     try{
-      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{}
+      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{};
   document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
 ) : {};
       if (titleEl && t.donateTitle)  titleEl.textContent = String(t.donateTitle);
