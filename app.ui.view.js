@@ -91,7 +91,7 @@
         }
       }
 
-      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
+      const t = (typeof App.i18n === 'function') ? App.i18n() : { badgeSetWords:'Слов в наборе', badgeLearned:'Выучено' };
       host.textContent = (t.badgeSetWords||'Слов в наборе') + ': ' + String(total) + ' / ' + (t.badgeLearned||'Выучено') + ': ' + String(learned);
     }catch(_){}
   }
@@ -157,7 +157,7 @@
 
   function addIDontKnowButton() {
     if (!D || !D.optionsRow) return;
-    const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
+    const t = (typeof App.i18n === 'function') ? App.i18n() : { iDontKnow: 'Не знаю' };
     const wrap = document.createElement('div');
     wrap.className = 'idkWrapper';
     const btn = document.createElement('button');
@@ -688,7 +688,7 @@ function renderDictList() {
     const name = document.createElement('div');
     name.className = 'dictName';
     if (key === 'mistakes') {
-      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
+      const t = (typeof App.i18n === 'function') ? App.i18n() : null;
       name.textContent = (t && t.mistakesName) ? t.mistakesName : 'Мои ошибки';
     } else if (key === 'fav' || key === 'favorites') {
       name.textContent = (App.settings.lang === 'ru') ? 'Избранное' : 'Обране'; try{ App.applyI18nTitles(document); }catch(_){}
@@ -975,20 +975,59 @@ renderDictList();
   }
 })();
 
-;(function(){
-  const infoBtn   = document.getElementById('btnInfo');
-  const modal     = document.getElementById('infoModal');
-  const titleEl   = document.getElementById('infoTitle');
-  const contentEl = document.getElementById('infoContent');
-  const closeEl   = document.getElementById('infoClose');
+// === Info modal =============================================================
+;(function () {
+  const modal   = document.getElementById('infoModal');
+  if (!modal) return;
 
-  function fillFromI18n(){
-    try{
-      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
-      if (titleEl && t.infoTitle) titleEl.textContent = t.infoTitle;
-      if (Array.isArray(t.infoSteps) && contentEl){
-        const ul = document.createElement('ul');
-        t.infoSteps.forEach(function(s){ const li=document.createElement('li'); li.textContent=String(s||''); ul.appendChild(li); });
+  const okBtn   = modal.querySelector('#infoOk');
+  const xBtn    = modal.querySelector('#infoClose');
+  const titleEl = modal.querySelector('#infoTitle');
+  const bodyEl  = modal.querySelector('#infoContent');
+  const infoBtn = document.getElementById('btnInfo');
+
+  function getT () {
+    try {
+      return (typeof App !== 'undefined' && typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
+    } catch (_) { return {}; }
+  }
+
+  function fill () {
+    const t = getT();
+
+    if (titleEl && t.infoTitle) titleEl.textContent = String(t.infoTitle);
+    if (okBtn) okBtn.textContent = String(t.ok || 'OK');
+
+    if (Array.isArray(t.infoSteps) && bodyEl) {
+      bodyEl.innerHTML =
+        '<ul>' +
+        t.infoSteps.map(function (s) { return '<li>' + String(s || '') + '</li>'; }).join('') +
+        '</ul>';
+    }
+  }
+
+  function open ()  { try { fill();  modal.classList.remove('hidden'); } catch (_) {} }
+  function close () { try { modal.classList.add('hidden'); } catch (_) {} }
+
+  if (infoBtn) infoBtn.addEventListener('click', open);
+  if (okBtn)   okBtn  .addEventListener('click', close);
+  if (xBtn)    xBtn   .addEventListener('click', close);
+  modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+
+  try {
+    if (!window.__lex_info_fill_hooked) {
+      window.__lex_info_fill_hooked = true;
+      document.addEventListener('lexitron:ui-lang-changed', function () {
+        try { fill(); } catch (_) {}
+      });
+    }
+  } catch (_) {}
+
+  if (document.readyState === 'loading');
+    document.addEventListener('DOMContentLoaded', fill, { once: true });
+  else
+    fill();
+})();
         contentEl.appendChild(ul);
       }
 
@@ -1021,7 +1060,7 @@ renderDictList();
   else fillFromI18n();
 })();
 
-;;(function () {
+;(function () {
   const btn   = document.getElementById('settingsBtn');
   const modal = document.getElementById('settingsModal');
   if (!btn || !modal) return;
@@ -1066,9 +1105,45 @@ renderDictList();
     }
   } catch (_) {}
 
-  // optional: hook your open() here if needed
-  // btn.addEventListener('click', function(){ fillFromI18n(); modal.classList.remove('hidden'); });
-})();();
+})();
+
+  function fillFromI18n(){
+    try{
+      const t = (typeof App.i18n==='function') ? (App.i18n()||{};
+  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
+) : {};
+      if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
+      if (contentEl){
+        const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
+        if (normalEl && t.modeNormal) normalEl.textContent = String(t.modeNormal);
+        const hardEl = contentEl.querySelector('[data-i18n="modeHard"]');
+        if (hardEl && t.modeHard) hardEl.textContent = String(t.modeHard);
+
+        const text = (t.settingsInDev!=null) ? String(t.settingsInDev) : '';
+        (function(){
+          const sel = '[data-i18n="settingsInDev"]';
+          let p = contentEl.querySelector(sel);
+          if (!p && text && String(text).trim().length){
+            p = document.createElement('p');
+            p.setAttribute('data-i18n','settingsInDev');
+            contentEl.prepend(p);
+          }
+          p.textContent = text;
+        })();
+      }
+    }catch(_){}
+  }
+  function open(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
+  function close(){ try{ modal.classList.add('hidden'); }catch(_){} }
+
+  btn.addEventListener('click', open, { passive:true });
+  if (closeEl) closeEl.addEventListener('click', close, { passive:true });
+  if (okEl) okEl.addEventListener('click', close, { passive:true });
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); }, { passive:true });
+
+  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', fillFromI18n);
+  else fillFromI18n();
+})();
 
 ;(function(){
   var modal   = document.getElementById('infoModal');
@@ -1210,21 +1285,40 @@ function close(){ modal.classList.add('hidden'); }
 
 })();
 
-;(function(){
-  const btn   = document.getElementById('btnDonate');
+// === Donate modal ===========================================================
+;(function () {
   const modal = document.getElementById('donateModal');
-  if (!btn || !modal) return;
+  if (!modal) return;
 
-  const titleEl   = document.getElementById('donateTitle');
-  const contentEl = document.getElementById('donateContent');
-  const closeEl   = document.getElementById('donateClose');
-  const okEl      = document.getElementById('donateOk');
+  const titleEl = modal.querySelector('#donateTitle');
+  const okBtn   = modal.querySelector('#donateOk');
+  const xBtn    = modal.querySelector('#donateClose');
 
-  function fillFromI18n(){
-    try{
-      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{};
-  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
+  function fillFromI18n () {
+    try {
+      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{}) : {};
 
+      if (titleEl && t.donateTitle) titleEl.textContent = String(t.donateTitle);
+      if (okBtn) okBtn.textContent = String(t.ok || 'OK');
+    } catch (_) {}
+  }
+
+  try {
+    if (!window.__lex_donate_fill_hooked) {
+      window.__lex_donate_fill_hooked = true;
+      document.addEventListener('lexitron:ui-lang-changed', function () {
+        try { fillFromI18n(); } catch (_) {}
+      });
+    }
+  } catch (_) {}
+
+  function open(){ try { fillFromI18n(); modal.classList.remove('hidden'); } catch(_){} }
+  function close(){ try { modal.classList.add('hidden'); } catch(_){} }
+
+  if (okBtn) okBtn.addEventListener('click', close);
+  if (xBtn)  xBtn .addEventListener('click', close);
+})();
+) : {};
       if (titleEl && t.donateTitle)  titleEl.textContent = String(t.donateTitle);
       if (contentEl && t.donateText){
         const p = contentEl.querySelector('p');
@@ -1354,7 +1448,7 @@ if (document.readyState === 'loading') {
         const okBtn = document.getElementById('confirmOk');
         const cancelBtn = document.getElementById('confirmCancel');
         const closeBtn = document.getElementById('confirmClose');
-        const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
+        const t = (typeof App.i18n==='function') ? App.i18n() : null;
 
         titleEl.textContent = opts.title || (t && t.confirmTitle) || 'Подтверждение';
         textEl.textContent = opts.text || (t && t.confirmText) || 'Вы уверены?';
