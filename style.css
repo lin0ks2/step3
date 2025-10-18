@@ -1083,3 +1083,80 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 .modalBody #modeToggleWrap + .sectionDivider + #backupSection .settingsSubtitle{
   margin-top:8px;
 }
+
+#settingsModal .modalBody .backupTitle{
+  font-size:16px !important;
+  font-weight:600 !important;
+  line-height:1.25;
+  margin:0 0 10px;
+  text-align:left;
+}
+
+#settingsModal .modalBody .settingsSubtitle{
+  font-size:16px !important;
+  font-weight:600 !important;
+  line-height:1.25;
+  margin:0 0 10px;
+  text-align:left;
+}
+
+#settingsModal #modeToggleWrap{
+  user-select:none;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  text-align:center;
+}
+
+#settingsModal #modeToggleWrap .switchLabel{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+#settingsModal .modalBody #modeToggleWrap + .sectionDivider{
+  position:relative;
+  height:0;
+  margin:10px 0 12px;
+}
+
+#settingsModal .modalBody #modeToggleWrap + .sectionDivider::after{
+  content:"";
+  position:absolute;
+  left:14px; right:14px;
+  height:1px;
+  background:var(--border);
+  transform:translateZ(0);
+  -webkit-transform:translateZ(0);
+}
+
+#settingsModal .modalBody #modeToggleWrap + .sectionDivider + #backupSection .settingsSubtitle{
+  margin-top: 8px !important;
+}
+
+#settingsModal #backupSection .btn{
+  background:var(--idk-bg);
+  border:1px solid var(--border);
+  color:var(--idk-fg);
+  margin-top:6px; height:42px; padding:0 16px;
+  border-radius:12px; font-size:15px; font-weight:600;
+  display:flex; align-items:center; justify-content:center; box-shadow:none;
+  will-change: transform, filter;
+}
+
+#settingsModal #backupSection .btn:hover{
+  filter:brightness(1.06);
+}
+
+#settingsModal #backupSection .btn:focus, #settingsModal #backupSection .btn:focus-visible{
+  outline:none; box-shadow:0 0 0 3px var(--focus-ring);
+}
+
+#settingsModal #backupSection .btn:active{
+  transform: translateY(1px);
+}
+
+[data-theme="dark"] #settingsModal #backupSection .btn{
+  background:#111827; color:var(--text); border:1px solid #374151; box-shadow:none;
+}
