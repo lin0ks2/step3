@@ -106,38 +106,7 @@ main{flex:1;display:grid;place-items:center;padding:12px}/* ====================
   margin-top:8px; font-size:12px; color:var(--muted);
   border:1px solid var(--border); border-radius:12px; padding:6px 10px;
   display:inline-block; background:var(--card);
-}
-
-/* === Backup buttons (Export/Import) — same style as "Не знаю" (button.ghost) === */
-#backupSection .btn{
-  background:var(--idk-bg); 
-  border:1px solid var(--border); 
-  color:var(--idk-fg);
-  margin-top:6px; 
-  height:42px; 
-  padding:0 16px;
-  border-radius:12px; 
-  font-size:15px; 
-  font-weight:600;
-  display:flex; 
-  align-items:center; 
-  justify-content:center; 
-  box-shadow:none; 
-  will-change: transform, filter;
-}
-#backupSection .btn:hover{ filter:brightness(1.06); }
-#backupSection .btn:focus, 
-#backupSection .btn:focus-visible{ outline:none; box-shadow:0 0 0 3px var(--focus-ring); }
-#backupSection .btn:active{ transform: translateY(1px); }
-
-/* Dark theme parity */
-[data-theme="dark"] #backupSection .btn{ 
-  background:#111827; 
-  color:var(--text); 
-  border:1px solid #374151; 
-  box-shadow:none; 
-}
-/* Модалка словарей */
+}/* Модалка словарей */
 .modal.hidden{display:none}/* ============================== MODAL · GENERIC =============================== */
 .modal{position:fixed; inset:0; display:grid; place-items:center; z-index:50; background: var(--overlay);}/* ============================== MODAL · BACKDROP =============================== */
 .backdrop{position:absolute; inset:0; background:var(--overlay)}/* ============================== MODAL · DIALOG FRAME =============================== */
@@ -473,7 +442,15 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   height: 36px;
   border-radius:12px;
 }/* Mode toggle — iOS-like switch */
-#modeToggleWrap{ user-select:none }#modeToggleWrap label{ gap:12px }#modeToggleWrap #modeToggle{
+#modeToggleWrap{
+  user-select:none;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  text-align:center;
+
+}#modeToggleWrap label{ gap:12px }#modeToggleWrap #modeToggle{
   appearance: none;
   position: relative;
   width: 54px; height: 30px;
@@ -1012,12 +989,12 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 .m-10{ margin:10px; }
 .cursor-pointer{ cursor:pointer; }
 
-.modalBody h3.backupTitle {
-  font-size: 16px !important;
-  font-weight: 600 !important;
-  line-height: 1.25;
-  margin: 0 0 10px;
-  text-align: left;
+.modalBody h3.backupTitle{
+  font-size:14px;
+  font-weight:600;
+  line-height:1.25;
+  margin:0 0 10px;
+  text-align:left;
 }
 
 .modalBody #modeToggleWrap + .sectionDivider {
@@ -1032,7 +1009,7 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 }
 
 .modalBody .settingsSubtitle{
-  font-size:16px;
+  font-size:14px;
   font-weight:600;
   line-height:1.25;
   margin:0 0 10px;
@@ -1046,4 +1023,40 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
   justify-content:center;
   gap:var(--gap,12px);
   margin-top:8px;
+}
+
+#modeToggleWrap .switchLabel{
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+}
+
+/* === Backup buttons (Export/Import) — same style as "Не знаю" (button.ghost) === */
+#backupSection .btn{
+  background:var(--idk-bg); 
+  border:1px solid var(--border); 
+  color:var(--idk-fg);
+  margin-top:6px; 
+  height:42px; 
+  padding:0 16px;
+  border-radius:12px; 
+  font-size:15px; 
+  font-weight:600;
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  box-shadow:none; 
+  will-change: transform, filter;
+}
+#backupSection .btn:hover{ filter:brightness(1.06); }
+#backupSection .btn:focus, 
+#backupSection .btn:focus-visible{ outline:none; box-shadow:0 0 0 3px var(--focus-ring); }
+#backupSection .btn:active{ transform: translateY(1px); }
+/* Dark theme parity */
+[data-theme="dark"] #backupSection .btn{ 
+  background:#111827; 
+  color:var(--text); 
+  border:1px solid #374151; 
+  box-shadow:none; 
 }
