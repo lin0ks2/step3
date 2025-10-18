@@ -442,7 +442,14 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   height: 36px;
   border-radius:12px;
 }/* Mode toggle — iOS-like switch */
-#modeToggleWrap{ user-select:none }#modeToggleWrap label{ gap:12px }#modeToggleWrap #modeToggle{
+#modeToggleWrap{
+  user-select:none;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  text-align:center;
+}#modeToggleWrap label{ gap:12px }#modeToggleWrap #modeToggle{
   appearance: none;
   position: relative;
   width: 54px; height: 30px;
@@ -1001,7 +1008,7 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 }
 
 .modalBody .settingsSubtitle{
-  font-size:16px;
+  font-size:14px;
   font-weight:600;
   line-height:1.25;
   margin:0 0 10px;
@@ -1017,83 +1024,52 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
   margin-top:8px;
 }
 
-
-/* ==========================================================================
-   LEXITRON · SETTINGS MODAL — CONSOLIDATED FIXES (buttons = btnPill)
-   ========================================================================== */
-#settingsModal .modalBody .backupTitle,
-#settingsModal .modalBody .settingsSubtitle{
-  font-size:16px !important;
-  font-weight:600 !important;
+.modalBody .backupTitle{
+  font-size:14px;
+  font-weight:600;
   line-height:1.25;
   margin:0 0 10px;
   text-align:left;
 }
 
-/* Toggle centered */
-#settingsModal #modeToggleWrap{
-  user-select:none;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:100%;
-  text-align:center;
-}
-#settingsModal #modeToggleWrap .switchLabel{
+#modeToggleWrap .switchLabel{
   display:flex;
   align-items:center;
   gap:12px;
 }
 
-/* Divider under toggle (like header/footer) */
-#settingsModal .modalBody #modeToggleWrap + .sectionDivider{
-  position:relative;
-  height:0;
-  margin:10px 0 12px;
+#backupSection .btn{
+  background:var(--idk-bg);
+  border:1px solid var(--border);
+  color:var(--idk-fg);
+  margin-top:6px; height:42px; padding:0 16px;
+  border-radius:12px; font-size:15px; font-weight:600;
+  display:flex; align-items:center; justify-content:center; box-shadow:none;
+  will-change: transform, filter;
 }
-#settingsModal .modalBody #modeToggleWrap + .sectionDivider::after{
+
+#backupSection .btn:hover{
+  filter:brightness(1.06);
+}
+
+#backupSection .btn:focus, #backupSection .btn:focus-visible{
+  outline:none; box-shadow:0 0 0 3px var(--focus-ring);
+}
+
+#backupSection .btn:active{
+  transform: translateY(1px);
+}
+
+[data-theme="dark"] #backupSection .btn{
+  background:#111827; color:var(--text); border:1px solid #374151; box-shadow:none;
+}
+
+.modalBody #modeToggleWrap::after{
   content:"";
-  position:absolute;
-  left:14px; right:14px;
+  display:block;
   height:1px;
   background:var(--border);
+  margin:12px 0 10px;
   transform:translateZ(0);
   -webkit-transform:translateZ(0);
-}
-
-/* Backup buttons styled exactly like #infoModal .btnPill */
-#settingsModal #backupSection .btn{
-background: var(--card);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 15px;
-
-  font-weight: 500;
-  box-shadow: none;
- padding:8px 16px;
-}
-#settingsModal #backupSection .btn:hover{
-background: rgba(0,0,0,0.05);
-}
-#settingsModal #backupSection .btn:disabled{
-opacity:.6;
-  background: var(--btn-disabled-bg, rgba(0,0,0,.12));
-  color: var(--muted);
-  border: none;
-  cursor: default;
-}
-/* ========================================================================== */
-
-
-/* === Fine-tune: spacing between divider and "Резервное копирование" title === */
-#settingsModal .modalBody #modeToggleWrap + .sectionDivider + #backupSection .settingsSubtitle {
-  margin-top: 14px !important;
-}
-
-
-/* === Adjust spacing: increase bottom margin of the divider under the toggle === */
-#settingsModal .modalBody #modeToggleWrap + .sectionDivider{
-  margin-bottom: 16px !important; /* was 12px */
-  /* keep position/height from earlier rules */
 }
