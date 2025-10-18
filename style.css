@@ -442,7 +442,20 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   height: 36px;
   border-radius:12px;
 }/* Mode toggle — iOS-like switch */
-#modeToggleWrap{ user-select:none }#modeToggleWrap label{ gap:12px }#modeToggleWrap #modeToggle{
+/* Center the whole mode toggle row inside settings modal */
+#modeToggleWrap{
+  user-select:none;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  text-align:center;
+}
+#modeToggleWrap label{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}#modeToggleWrap #modeToggle{
   appearance: none;
   position: relative;
   width: 54px; height: 30px;
@@ -982,8 +995,8 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 .cursor-pointer{ cursor:pointer; }
 
 .modalBody h3.backupTitle {
-  font-size: 14px;
-  font-weight: 600 ;
+  font-size: 16px !important;
+  font-weight: 600 !important;
   line-height: 1.25;
   margin: 0 0 10px;
   text-align: left;
@@ -1001,7 +1014,7 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 }
 
 .modalBody .settingsSubtitle{
-  font-size:14px;
+  font-size:16px;
   font-weight:600;
   line-height:1.25;
   margin:0 0 10px;
