@@ -975,59 +975,20 @@ renderDictList();
   }
 })();
 
-// === Info modal =============================================================
-;(function () {
-  const modal   = document.getElementById('infoModal');
-  if (!modal) return;
+;(function(){
+  const infoBtn   = document.getElementById('btnInfo');
+  const modal     = document.getElementById('infoModal');
+  const titleEl   = document.getElementById('infoTitle');
+  const contentEl = document.getElementById('infoContent');
+  const closeEl   = document.getElementById('infoClose');
 
-  const okBtn   = modal.querySelector('#infoOk');
-  const xBtn    = modal.querySelector('#infoClose');
-  const titleEl = modal.querySelector('#infoTitle');
-  const bodyEl  = modal.querySelector('#infoContent');
-  const infoBtn = document.getElementById('btnInfo');
-
-  function getT () {
-    try {
-      return (typeof App !== 'undefined' && typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
-    } catch (_) { return {}; }
-  }
-
-  function fill () {
-    const t = getT();
-
-    if (titleEl && t.infoTitle) titleEl.textContent = String(t.infoTitle);
-    if (okBtn) okBtn.textContent = String(t.ok || 'OK');
-
-    if (Array.isArray(t.infoSteps) && bodyEl) {
-      bodyEl.innerHTML =
-        '<ul>' +
-        t.infoSteps.map(function (s) { return '<li>' + String(s || '') + '</li>'; }).join('') +
-        '</ul>';
-    }
-  }
-
-  function open ()  { try { fill();  modal.classList.remove('hidden'); } catch (_) {} }
-  function close () { try { modal.classList.add('hidden'); } catch (_) {} }
-
-  if (infoBtn) infoBtn.addEventListener('click', open);
-  if (okBtn)   okBtn  .addEventListener('click', close);
-  if (xBtn)    xBtn   .addEventListener('click', close);
-  modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
-
-  try {
-    if (!window.__lex_info_fill_hooked) {
-      window.__lex_info_fill_hooked = true;
-      document.addEventListener('lexitron:ui-lang-changed', function () {
-        try { fill(); } catch (_) {}
-      });
-    }
-  } catch (_) {}
-
-  if (document.readyState === 'loading');
-    document.addEventListener('DOMContentLoaded', fill, { once: true });
-  else
-    fill();
-})();
+  function fillFromI18n(){
+    try{
+      const t = (typeof App.i18n==='function') ? (App.i18n()||{}) : {};
+      if (titleEl && t.infoTitle) titleEl.textContent = t.infoTitle;
+      if (Array.isArray(t.infoSteps) && contentEl){
+        const ul = document.createElement('ul');
+        t.infoSteps.forEach(function(s){ const li=document.createElement('li'); li.textContent=String(s||''); ul.appendChild(li); });
         contentEl.appendChild(ul);
       }
 
@@ -1060,52 +1021,17 @@ renderDictList();
   else fillFromI18n();
 })();
 
-;(function () {
-  const btn   = document.getElementById('settingsBtn');
+;(function(){
+  const btn   = document.getElementById('btnSettings');
   const modal = document.getElementById('settingsModal');
   if (!btn || !modal) return;
-
   const titleEl   = document.getElementById('settingsTitle');
   const contentEl = document.getElementById('settingsContent');
   const closeEl   = document.getElementById('settingsClose');
   const okEl      = document.getElementById('settingsOk');
 
   const toggleEl  = document.getElementById('modeToggle');
-  if (toggleEl) {
-    toggleEl.addEventListener('change', function () {
-      try { App.applyFromUI && App.applyFromUI(); } catch (e) {}
-    });
-  }
-
-  function fillFromI18n() {
-    try {
-      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
-
-      if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
-
-      if (contentEl) {
-        const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
-        if (normalEl && t.modeNormal) normalEl.textContent = String(t.modeNormal);
-
-        const hardEl = contentEl.querySelector('[data-i18n="modeHard"]');
-        if (hardEl && t.modeHard) hardEl.textContent = String(t.modeHard);
-      }
-
-      if (okEl    && t.ok)    okEl.textContent    = String(t.ok);
-      if (closeEl && t.close) closeEl.textContent = String(t.close);
-    } catch (_) {}
-  }
-
-  try {
-    if (!window.__lex_settings_fill_hooked) {
-      window.__lex_settings_fill_hooked = true;
-      document.addEventListener('lexitron:ui-lang-changed', function () {
-        try { fillFromI18n(); } catch (_) {}
-      });
-    }
-  } catch (_) {}
-
-})();
+  if (toggleEl) toggleEl.addEventListener('change', function(){ try{ App.applyFromUI && App.applyFromUI(); }catch(e){} });
 
   function fillFromI18n(){
     try{
@@ -1177,8 +1103,11 @@ function close(){ modal.classList.add('hidden'); }
   if (xBtn)    xBtn.addEventListener('click', close);
   modal.addEventListener('click', function(e){ if (e.target === modal) close(); });
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fill, {once:true});
-  else fill();
+  if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', fill, {once:true});
+} else {
+  fill();
+}
 })();
 
 /*!
@@ -1285,39 +1214,20 @@ function close(){ modal.classList.add('hidden'); }
 
 })();
 
-// === Donate modal ===========================================================
-;(function () {
+;(function(){
+  const btn   = document.getElementById('btnDonate');
   const modal = document.getElementById('donateModal');
-  if (!modal) return;
+  if (!btn || !modal) return;
 
-  const titleEl = modal.querySelector('#donateTitle');
-  const okBtn   = modal.querySelector('#donateOk');
-  const xBtn    = modal.querySelector('#donateClose');
+  const titleEl   = document.getElementById('donateTitle');
+  const contentEl = document.getElementById('donateContent');
+  const closeEl   = document.getElementById('donateClose');
+  const okEl      = document.getElementById('donateOk');
 
-  function fillFromI18n () {
-    try {
-      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{}) : {};
-
-      if (titleEl && t.donateTitle) titleEl.textContent = String(t.donateTitle);
-      if (okBtn) okBtn.textContent = String(t.ok || 'OK');
-    } catch (_) {}
-  }
-
-  try {
-    if (!window.__lex_donate_fill_hooked) {
-      window.__lex_donate_fill_hooked = true;
-      document.addEventListener('lexitron:ui-lang-changed', function () {
-        try { fillFromI18n(); } catch (_) {}
-      });
-    }
-  } catch (_) {}
-
-  function open(){ try { fillFromI18n(); modal.classList.remove('hidden'); } catch(_){} }
-  function close(){ try { modal.classList.add('hidden'); } catch(_){} }
-
-  if (okBtn) okBtn.addEventListener('click', close);
-  if (xBtn)  xBtn .addEventListener('click', close);
-})();
+  function fillFromI18n(){
+    try{
+      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{};
+  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
 ) : {};
       if (titleEl && t.donateTitle)  titleEl.textContent = String(t.donateTitle);
       if (contentEl && t.donateText){
@@ -2032,6 +1942,3 @@ regStubHint:'Placeholder — activation logic will be added later.'}
     }
   }catch(_){}
 })();
-
-/*LANG_CHANGE_LISTENER_SETTINGS*/
-try{document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });}catch(_){ }
