@@ -1,5 +1,5 @@
 
-;(function(){
+(function(){
   const App = window.App || (window.App = {});
   App.settings = App.settings || {};
   if (!App.settings.mode) App.settings.mode = (localStorage.getItem('lexitron.mode') || 'normal'); // default: normal
@@ -24,7 +24,7 @@
  *  - No other behavior changed (keeps absolute App.state.index semantics and prior bugfixes).
  */
 
-;(function () {
+(function () {
   const App = window.App || (window.App = {});
   const D = App.DOM || (App.DOM = {});
 
@@ -975,7 +975,7 @@ renderDictList();
   }
 })();
 
-;(function(){
+(function(){
   const infoBtn   = document.getElementById('btnInfo');
   const modal     = document.getElementById('infoModal');
   const titleEl   = document.getElementById('infoTitle');
@@ -1010,6 +1010,13 @@ renderDictList();
       })();
     }catch(_){}
   }
+try{
+  if(!window.__lex_settings_fill_hooked){
+    window.__lex_settings_fill_hooked=true;
+    document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){ } });
+  }
+}catch(_){ }
+
   function openInfo(){ try{ fillFromI18n(); modal && modal.classList.remove('hidden'); }catch(_){} }
   function closeInfo(){ try{ modal && modal.classList.add('hidden'); }catch(_){} }
 
@@ -1021,7 +1028,7 @@ renderDictList();
   else fillFromI18n();
 })();
 
-;(function(){
+(function(){
   const btn   = document.getElementById('btnSettings');
   const modal = document.getElementById('settingsModal');
   if (!btn || !modal) return;
@@ -1035,9 +1042,7 @@ renderDictList();
 
   function fillFromI18n(){
     try{
-      const t = (typeof App.i18n==='function') ? (App.i18n()||{};
-  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
-) : {};
+      const t = (typeof App.i18n==='function') ? (App.i18n()||{}) : {};
       if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
       if (contentEl){
         const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
@@ -1071,7 +1076,7 @@ renderDictList();
   else fillFromI18n();
 })();
 
-;(function(){
+(function(){
   var modal   = document.getElementById('infoModal');
   if (!modal) return;
 
@@ -1089,7 +1094,7 @@ renderDictList();
     if (okBtn) okBtn.textContent = tr.ok || 'OK';
     if (infoBtn && tr.infoTitle) infoBtn.title = tr.infoTitle; // тултип «Инструкция»
     if (Array.isArray(tr.infoSteps) && bodyEl){
-      bodyEl.innerHTML = '<ul>' + tr.infoSteps.map(function(s){ return '<li>'+String(s||'')+'</li>'; };
+      bodyEl.innerHTML = '<ul>' + tr.infoSteps.map(function(s){ return '<li>'+String(s||'')+'</li>'; }
   document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fill(); }catch(_){} });
 ).join('') + '</ul>';
     }
@@ -1103,11 +1108,8 @@ function close(){ modal.classList.add('hidden'); }
   if (xBtn)    xBtn.addEventListener('click', close);
   modal.addEventListener('click', function(e){ if (e.target === modal) close(); });
 
-  if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', fill, {once:true});
-} else {
-  fill();
-}
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fill, {once:true});
+  else fill();
 })();
 
 /*!
@@ -1116,7 +1118,7 @@ function close(){ modal.classList.add('hidden'); }
  *  - Рисует дробные ★
  *  Подключать последним, после всех скриптов
  */
-;(function(){
+(function(){
   'use strict';
   var D=document,W=window;
 
@@ -1168,7 +1170,7 @@ function close(){ modal.classList.add('hidden'); }
  * lang-flag.fix.js — keeps header language flag in sync
  * Version: 1.6.1
  */
-;(function(){
+(function(){
   'use strict';
 
   function currentLang(){
@@ -1203,7 +1205,8 @@ function close(){ modal.classList.add('hidden'); }
     document.addEventListener('DOMContentLoaded',applyFlag,{once:true});
   }else{
     applyFlag();
-  };
+  }
+
   document.addEventListener('i18n:lang-changed',applyFlag);
   document.addEventListener('lexitron:setup:done',applyFlag);
   document.addEventListener('visibilitychange',function(){
@@ -1214,7 +1217,7 @@ function close(){ modal.classList.add('hidden'); }
 
 })();
 
-;(function(){
+(function(){
   const btn   = document.getElementById('btnDonate');
   const modal = document.getElementById('donateModal');
   if (!btn || !modal) return;
@@ -1226,7 +1229,7 @@ function close(){ modal.classList.add('hidden'); }
 
   function fillFromI18n(){
     try{
-      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{};
+      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{}
   document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
 ) : {};
       if (titleEl && t.donateTitle)  titleEl.textContent = String(t.donateTitle);
@@ -1248,7 +1251,7 @@ function close(){ modal.classList.add('hidden'); }
   else fillFromI18n();
 })();
 
-;(function(){
+(function(){
   try{
     const App = window.App || {};
     App.Trainer = App.Trainer || {};
@@ -1287,7 +1290,7 @@ App.resetProgress = function(){
     if (typeof App.renderStats === 'function') App.renderStats();
   } catch(e){(void 0); }
 };
-;(function(){
+(function(){
   const App = window.App || (window.App = {});
   function syncFromSettings(){
     try{
@@ -1344,7 +1347,7 @@ if (document.readyState === 'loading') {
     syncFromSettings();
   }
 })();
-;(function(){
+(function(){
   const App = window.App || (window.App = {});
   App.showConfirmModal = function(opts){
     opts = opts || {};
@@ -1409,7 +1412,7 @@ if (document.readyState === 'loading') {
   };
 })();
 
-;(function(){
+(function(){
   var G = (typeof window!=='undefined')?window:self;
   var App = G.App || (G.App={});
   var decks = G.decks || G.DECKS || (App.decks && App.decks.all) || (App.decks && App.decks) || {};
@@ -1558,7 +1561,7 @@ if (document.readyState === 'loading') {
   }
 })(); // end injected wrapper
 
-;(function(){
+(function(){
   function updateSpoilerHeader(){
   try{
     var flagEl = document.getElementById('dictFlag');
@@ -1646,7 +1649,7 @@ if (document.readyState === 'loading') {
   }
 })();
 
-;(function(){
+(function(){
   try{
     const modal = document.getElementById('infoModal');
     if (!modal) return;
@@ -1879,7 +1882,7 @@ regStubHint:'Placeholder — activation logic will be added later.'}
   }catch(e){(void 0); }
 })();
 
-;(function(){
+(function(){
   try{
     var modal = document.getElementById('infoModal');
     if (!modal) return;
@@ -1931,7 +1934,7 @@ regStubHint:'Placeholder — activation logic will be added later.'}
 })();
 
 /*HOOK_UI_LANG_SELECT*/
-;(function(){
+(function(){
   try{
     var sel = document.querySelector("select[name='uiLang'], #uiLang, [data-role='uiLang']");
     if(sel && !sel.__lex_hooked){
