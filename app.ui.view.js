@@ -1021,55 +1021,54 @@ renderDictList();
   else fillFromI18n();
 })();
 
-;(function(){
-  const btn   = document.getElementById('btnSettings');
+;;(function () {
+  const btn   = document.getElementById('settingsBtn');
   const modal = document.getElementById('settingsModal');
   if (!btn || !modal) return;
+
   const titleEl   = document.getElementById('settingsTitle');
   const contentEl = document.getElementById('settingsContent');
   const closeEl   = document.getElementById('settingsClose');
   const okEl      = document.getElementById('settingsOk');
 
   const toggleEl  = document.getElementById('modeToggle');
-  if (toggleEl) toggleEl.addEventListener('change', function(){ try{ App.applyFromUI && App.applyFromUI(); }catch(e){} });
+  if (toggleEl) {
+    toggleEl.addEventListener('change', function () {
+      try { App.applyFromUI && App.applyFromUI(); } catch (e) {}
+    });
+  }
 
-  function fillFromI18n(){
-    try{
+  function fillFromI18n() {
+    try {
       const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
-  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
 
       if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
-      if (contentEl){
+
+      if (contentEl) {
         const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
         if (normalEl && t.modeNormal) normalEl.textContent = String(t.modeNormal);
+
         const hardEl = contentEl.querySelector('[data-i18n="modeHard"]');
         if (hardEl && t.modeHard) hardEl.textContent = String(t.modeHard);
-
-        const text = (t.settingsInDev!=null) ? String(t.settingsInDev) : '';
-        (function(){
-          const sel = '[data-i18n="settingsInDev"]';
-          let p = contentEl.querySelector(sel);
-          if (!p && text && String(text).trim().length){
-            p = document.createElement('p');
-            p.setAttribute('data-i18n','settingsInDev');
-            contentEl.prepend(p);
-          }
-          p.textContent = text;
-        })();
       }
-    }catch(_){}
+
+      if (okEl    && t.ok)    okEl.textContent    = String(t.ok);
+      if (closeEl && t.close) closeEl.textContent = String(t.close);
+    } catch (_) {}
   }
-  function open(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
-  function close(){ try{ modal.classList.add('hidden'); }catch(_){} }
 
-  btn.addEventListener('click', open, { passive:true });
-  if (closeEl) closeEl.addEventListener('click', close, { passive:true });
-  if (okEl) okEl.addEventListener('click', close, { passive:true });
-  modal.addEventListener('click', function(e){ if (e.target===modal) close(); }, { passive:true });
+  try {
+    if (!window.__lex_settings_fill_hooked) {
+      window.__lex_settings_fill_hooked = true;
+      document.addEventListener('lexitron:ui-lang-changed', function () {
+        try { fillFromI18n(); } catch (_) {}
+      });
+    }
+  } catch (_) {}
 
-  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', fillFromI18n);
-  else fillFromI18n();
-})();
+  // optional: hook your open() here if needed
+  // btn.addEventListener('click', function(){ fillFromI18n(); modal.classList.remove('hidden'); });
+})();();
 
 ;(function(){
   var modal   = document.getElementById('infoModal');
@@ -1223,8 +1222,10 @@ function close(){ modal.classList.add('hidden'); }
 
   function fillFromI18n(){
     try{
-      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{}) : {};
-if (titleEl && t.donateTitle)  titleEl.textContent = String(t.donateTitle);
+      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{};
+  document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
+
+      if (titleEl && t.donateTitle)  titleEl.textContent = String(t.donateTitle);
       if (contentEl && t.donateText){
         const p = contentEl.querySelector('p');
         if (p) p.textContent = String(t.donateText);
