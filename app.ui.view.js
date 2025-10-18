@@ -976,34 +976,7 @@ renderDictList();
 })();
 
 // === Info modal =============================================================
-;(function () {
-  const infoBtn   = document.getElementById('btnInfo');
-  const modal     = document.getElementById('infoModal');
-  const titleEl   = document.getElementById('infoTitle');
-  const contentEl = document.getElementById('infoContent');
-  const closeEl   = document.getElementById('infoClose');
-  const okBtn     = document.getElementById('infoOk');
-
-  if (!modal) return;
-
-  function fillFromI18n(){
-    try{
-      const t = (typeof App.i18n==='function') ? (App.i18n()||{}) : {};
-      if (titleEl && t.infoTitle) titleEl.textContent = String(t.infoTitle);
-      if (Array.isArray(t.infoSteps) && contentEl){
-        contentEl.innerHTML = '<ul>' + t.infoSteps.map(function(s){ return '<li>'+String(s||'')+'</li>'; }).join('') + '</ul>';
-      }
-    }catch(_){}
-  }
-  function open(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
-  function close(){ try{ modal.classList.add('hidden'); }catch(_){} }
-
-  if (infoBtn) infoBtn.addEventListener('click', open);
-  if (closeEl) closeEl.addEventListener('click', close);
-  if (okBtn)   okBtn.addEventListener('click', close);
-  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
-
-  try{
+try{
     if(!window.__lex_info_fill_hooked){
       window.__lex_info_fill_hooked = true;
       document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
@@ -1044,22 +1017,7 @@ renderDictList();
   else fillFromI18n();
 })();
 
-;(function () {
-  const btn   = document.getElementById('btnSettings') || document.getElementById('settingsBtn');
-  const modal = document.getElementById('settingsModal');
-  if (!modal) return;
-
-  const titleEl   = document.getElementById('settingsTitle');
-  const contentEl = document.getElementById('settingsContent');
-  const closeEl   = document.getElementById('settingsClose');
-  const okEl      = document.getElementById('settingsOk');
-
-  const toggleEl  = document.getElementById('modeToggle');
-  if (toggleEl) {
-    toggleEl.addEventListener('change', function () {
-      try { App.applyFromUI && App.applyFromUI(); } catch (_) {}
-    });
-  }
+}
 
   function fillFromI18n() {
     try {
@@ -1232,32 +1190,7 @@ function close(){ modal.classList.add('hidden'); }
 })();
 
 // === Donate modal ===========================================================
-;(function(){
-  const btn   = document.getElementById('btnDonate');
-  const modal = document.getElementById('donateModal');
-  if (!btn || !modal) return;
-
-  const titleEl   = document.getElementById('donateTitle');
-  const contentEl = document.getElementById('donateContent');
-  const closeEl   = document.getElementById('donateClose');
-  const okEl      = document.getElementById('donateOk');
-
-  function fillFromI18n(){
-    try{
-      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{}) : {};
-      if (titleEl && t.donateTitle)  titleEl.textContent = String(t.donateTitle);
-      if (contentEl && t.donateText){
-        const p = contentEl.querySelector('p');
-        if (p) p.textContent = String(t.donateText);
-      }
-      if (okEl) okEl.textContent = String(t.ok || 'OK');
-    }catch(_){}
-  }
-  function open(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
-  function close(){ try{ modal.classList.add('hidden'); }catch(_){} }
-
-  btn.addEventListener('click', function(e){ try{ e.preventDefault(); e.stopPropagation(); }catch(_){ } open(); }, { passive:false });
-  if (closeEl) closeEl.addEventListener('click', close, { passive:true });
+if (closeEl) closeEl.addEventListener('click', close, { passive:true });
   if (okEl)    okEl.addEventListener('click', close, { passive:true });
   modal.addEventListener('click', function(e){ if (e.target===modal) close(); }, { passive:true });
 
@@ -1688,139 +1621,7 @@ if (document.readyState === 'loading') {
   }
 })();
 
-;(function(){
-  try{
-    const modal = document.getElementById('infoModal');
-    if (!modal) return;
-
-    let frame = modal.querySelector('.modalFrame');
-    if (!frame){
-      frame = document.createElement('div');
-      frame.className = 'modalFrame';
-      modal.appendChild(frame);
-    }
-    frame.setAttribute('tabindex','-1');
-
-    frame.innerHTML = `
-      <div class="modalHeader">
-        <div class="modalTitle" id="infoTitle"></div>
-        <button class="iconBtn small" id="infoClose" aria-label="Close">✖️</button>
-      </div>
-      <div id="infoTabs" class="tabs" role="tablist" aria-label="Info">
-        <button class="tab" id="tab-instr" role="tab" aria-controls="panel-instr" aria-selected="true" tabindex="0"></button>
-        <button class="tab" id="tab-about" role="tab" aria-controls="panel-about" aria-selected="false" tabindex="-1"></button>
-      </div>
-      <div class="modalBody">
-        <section id="panel-instr" class="tabPanel" role="tabpanel" aria-labelledby="tab-instr">
-          <div id="infoContent" class="infoContent scrollArea"></div>
-        </section>
-        <section id="panel-about" class="tabPanel hidden" role="tabpanel" aria-labelledby="tab-about">
-          <div class="aboutGrid">
-            <div class="aboutRow">
-              <div class="aboutLabel">Версия</div>
-              <div class="aboutValue"><span id="appVersion">—</span></div>
-            </div>
-            <div class="aboutRow">
-              <div class="aboutLabel">Статус</div>
-              <div class="aboutValue">
-                <span id="licStatus">—</span>
-                <span id="licUser" class="muted"></span>
-              </div>
-            </div>
-          </div>
-          <div class="actionsRow">
-            <button id="btnCheckUpdates" class="btnPill"></button>
-          </div>
-
-          <div class="aboutSep"></div>
-<div class="regBlock">
-            <label for="regKey" id="regKeyLabel"></label>
-            <div class="regRow">
-              <input id="regKey" type="text" inputmode="latin" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX">
-              <button id="btnRegister" class="btnPill"></button>
-            </div>
-            <div id="regHint" class="muted"></div>
-          </div>
-        </section>
-      </div>
-      <div class="modalActions" style="text-align:center">
-        <button id="infoOk" class="primary">OK</button>
-      </div>
-    `;
-
-    const tabInstr = document.getElementById('tab-instr');
-    const tabAbout = document.getElementById('tab-about');
-    const panelInstr = document.getElementById('panel-instr');
-    const panelAbout = document.getElementById('panel-about');
-    const titleEl = document.getElementById('infoTitle');
-    const okBtn = document.getElementById('infoOk');
-    const xBtn = document.getElementById('infoClose');
-    const btnUpdates = document.getElementById('btnCheckUpdates');
-    const btnRegister = document.getElementById('btnRegister');
-    const regKeyEl = document.getElementById('regKey');
-    const regHintEl = document.getElementById('regHint');
-    const regKeyLabel = document.getElementById('regKeyLabel');
-    const bodyEl = document.getElementById('infoContent');
-    const verEl = document.getElementById('appVersion');
-    const licStatusEl = document.getElementById('licStatus');
-    const licUserEl = document.getElementById('licUser');
-
-    function lang(){ return (window.App && App.settings && App.settings.lang) || (App.settings && (App.settings.uiLang || App.settings.lang)) || 'uk'; }
-    function pack(){
-      const L = lang();
-      return (window.I18N && (I18N[L] || I18N.uk)) || {};
-    }
-    function T(k, def){
-      const p = pack();
-      if (p && p[k] != null) return p[k];
-      const d = {
-        ru: {infoTitle:'Информация', tabInstruction:'Инструкция', tabAbout:'О программе', ok:'OK', checkUpdates:'Проверить обновления', regKey:'Ключ регистрации', register:'Зарегистрировать',
-regStubHint:'Пока заглушка — логика активации будет добавлена позже.'},
-        uk: {infoTitle:'Інформація', tabInstruction:'Інструкція', tabAbout:'Про програму', ok:'OK', checkUpdates:'Перевірити оновлення', regKey:'Ключ реєстрації', register:'Зареєструвати',
-regStubHint:'Поки заглушка — логіку активації додамо пізніше.'},
-        en: {infoTitle:'Information', tabInstruction:'Instruction', tabAbout:'About', ok:'OK', checkUpdates:'Check for updates', regKey:'Registration key', register:'Register',
-regStubHint:'Placeholder — activation logic will be added later.'}
-      };
-      const L = lang();
-      return (d[L] && d[L][k]) || (d.ru[k]) || def || '';
-    }
-
-    function fillLabels(){
-      titleEl.textContent = T('infoTitle');
-      tabInstr.textContent = T('tabInstruction');
-      tabAbout.textContent = T('tabAbout');
-      okBtn.textContent = T('ok','OK');
-      btnUpdates.textContent = T('checkUpdates');
-      regKeyLabel.textContent = T('regKey');
-      btnRegister.textContent = T('register');
-      regHintEl.textContent = T('regStubHint');
-    }
-
-    function switchTab(which){
-      const instr = which==='instr';
-      tabInstr.classList.toggle('active', instr);
-      tabAbout.classList.toggle('active', !instr);
-      panelInstr.classList.toggle('hidden', !instr);
-      panelAbout.classList.toggle('hidden', instr);
-      tabInstr.setAttribute('aria-selected', instr?'true':'false');
-      tabAbout.setAttribute('aria-selected', !instr?'true':'false');
-    }
-    function lockBodyHeight(){
-      const body = modal.querySelector('.modalBody');
-      if (!body) return;
-      const instrActive = !panelInstr.classList.contains('hidden');
-      panelInstr.classList.remove('hidden');
-      panelAbout.classList.remove('hidden');
-      const h1 = panelInstr.scrollHeight;
-      const h2 = panelAbout.scrollHeight;
-      const maxH = Math.max(h1, h2, 240);
-      panelInstr.classList.toggle('hidden', !instrActive);
-      panelAbout.classList.toggle('hidden', instrActive);
-      body.style.height = maxH + 'px';
-    }
-
-    tabInstr.addEventListener('click', ()=> { switchTab('instr'); lockBodyHeight(); });
-    tabAbout.addEventListener('click', ()=> { switchTab('about'); lockBodyHeight(); });
+tabAbout.addEventListener('click', ()=> { switchTab('about'); lockBodyHeight(); });
 
     function ensureOnShow(){
       fillLabels();                            renderAboutDynamic();
@@ -1921,54 +1722,7 @@ regStubHint:'Placeholder — activation logic will be added later.'}
   }catch(e){(void 0); }
 })();
 
-;(function(){
-  try{
-    var modal = document.getElementById('infoModal');
-    if (!modal) return;
-
-    function lang(){ try{ return (window.App && App.settings && App.settings.lang) || (App.settings && (App.settings.uiLang || App.settings.lang)) || 'uk'; }catch(_){ return 'uk'; } }
-    function pack(){
-      var L = lang();
-      return (window.I18N && (I18N[L] || I18N.uk)) || {};
-    }
-    function defaults(){
-      var L = lang(), D={
-        ru:{title:'Информация', instr:'Инструкция', about:'О программе'},
-        uk:{title:'Інформація', instr:'Інструкція', about:'Про програму'},
-        en:{title:'Information', instr:'Instruction', about:'About'}
-      }; return D[L] || D.ru;
-    }
-
-    function applyOnce(){
-      var t = pack(), d = defaults();
-      var title = (t.infoTitle!=null)?String(t.infoTitle):d.title;
-      var tab1  = (t.tabInstruction!=null)?String(t.tabInstruction):d.instr;
-      var tab2  = (t.tabAbout!=null)?String(t.tabAbout):d.about;
-      if (title === tab1) title = d.title;
-
-      var titleEl = modal.querySelector('#infoTitle'); if (titleEl) titleEl.textContent = title;
-      var ti = modal.querySelector('#tab-instr'); if (ti && !ti.textContent.trim()) ti.textContent = tab1;
-      var ta = modal.querySelector('#tab-about'); if (ta && !ta.textContent.trim()) ta.textContent = tab2;
-
-      var hint = modal.querySelector('#regHint'); if (hint) hint.remove();
-
-      var btnUpd = modal.querySelector('#btnCheckUpdates');
-      if (btnUpd){
-        var actions = btnUpd.closest('.actionsRow') || btnUpd.parentElement;
-        if (actions && !modal.querySelector('.aboutSep')){
-          var sep = document.createElement('div');
-          sep.className = 'aboutSep';
-          actions.insertAdjacentElement('afterend', sep);
-        }
-      }
-    }
-
-    var run = function(){ if (!modal.classList.contains('hidden')) applyOnce(); };
-    run();
-    try{
-      var obs = new MutationObserver(run);
-      obs.observe(modal, {attributes:true, attributeFilter:['class']});
-    }catch(_){}
+}catch(_){}
   }catch(e){(void 0); }
 })();
 
@@ -1987,3 +1741,145 @@ regStubHint:'Placeholder — activation logic will be added later.'}
 
 /*LANG_CHANGE_LISTENER_SETTINGS*/
 try{document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });}catch(_){ }
+
+;(function () {
+  const btn   = document.getElementById('btnSettings') || document.getElementById('settingsBtn');
+  const modal = document.getElementById('settingsModal');
+  if (!modal) return;
+
+  const titleEl   = document.getElementById('settingsTitle');
+  const contentEl = document.getElementById('settingsContent');
+  const closeEl   = document.getElementById('settingsClose');
+  const okEl      = document.getElementById('settingsOk');
+
+  const toggleEl  = document.getElementById('modeToggle');
+  if (toggleEl) {
+    toggleEl.addEventListener('change', function () {
+      try { App && App.applyFromUI && App.applyFromUI(); } catch (_) {}
+    });
+  }
+
+  function fillFromI18n() {
+    try {
+      const t = (typeof App.i18n === 'function') ? (App.i18n() || {}) : {};
+      if (titleEl && t.settingsTitle) titleEl.textContent = String(t.settingsTitle);
+      if (contentEl) {
+        const normalEl = contentEl.querySelector('[data-i18n="modeNormal"]');
+        const hardEl   = contentEl.querySelector('[data-i18n="modeHard"]');
+        if (normalEl && t.modeNormal) normalEl.textContent = String(t.modeNormal);
+        if (hardEl   && t.modeHard)   hardEl.textContent   = String(t.modeHard);
+      }
+      if (okEl)    okEl.textContent    = String(t.ok || 'OK');
+      if (closeEl) closeEl.textContent = String(t.close || 'Close');
+    } catch (_) {}
+  }
+
+  function open(){ try { fillFromI18n(); modal.classList.remove('hidden'); } catch (_) {} }
+  function close(){ try { modal.classList.add('hidden'); } catch (_) {} }
+
+  if (btn)   btn  .addEventListener('click', open);
+  if (okEl)  okEl .addEventListener('click', close);
+  if (closeEl) closeEl.addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target === modal) close(); });
+
+  try {
+    if (!window.__lex_settings_fill_hooked) {
+      window.__lex_settings_fill_hooked = true;
+      document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
+    }
+  } catch (_) {}
+
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', fillFromI18n, { once: true });
+  else
+    fillFromI18n();
+})();
+
+// === Info modal =============================================================
+;(function () {
+  const infoBtn   = document.getElementById('btnInfo');
+  const modal     = document.getElementById('infoModal');
+  const titleEl   = document.getElementById('infoTitle');
+  const contentEl = document.getElementById('infoContent');
+  const closeEl   = document.getElementById('infoClose');
+  const okBtn     = document.getElementById('infoOk');
+
+  if (!modal) return;
+
+  function fillFromI18n(){
+    try{
+      const t = (typeof App.i18n==='function') ? (App.i18n()||{}) : {};
+      if (titleEl && t.infoTitle) titleEl.textContent = String(t.infoTitle);
+      if (Array.isArray(t.infoSteps) && contentEl){
+        contentEl.innerHTML =
+          '<ul>' + t.infoSteps.map(function(s){
+            return '<li>'+String(s || '')+'</li>';
+          }).join('') + '</ul>';
+      }
+      if (okBtn && t.ok) okBtn.textContent = String(t.ok);
+    }catch(_){}
+  }
+
+  function open(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
+  function close(){ try{ modal.classList.add('hidden'); }catch(_){} }
+
+  if (infoBtn) infoBtn.addEventListener('click', open);
+  if (closeEl) closeEl.addEventListener('click', close);
+  if (okBtn)   okBtn.addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+
+  try{
+    if(!window.__lex_info_fill_hooked){
+      window.__lex_info_fill_hooked = true;
+      document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
+    }
+  }catch(_){}
+
+  if (document.readyState==='loading')
+    document.addEventListener('DOMContentLoaded', fillFromI18n, {once:true});
+  else
+    fillFromI18n();
+})();
+
+// === Donate modal ===========================================================
+;(function(){
+  const btn   = document.getElementById('btnDonate');
+  const modal = document.getElementById('donateModal');
+  if (!modal) return;
+
+  const titleEl   = document.getElementById('donateTitle');
+  const contentEl = document.getElementById('donateContent');
+  const closeEl   = document.getElementById('donateClose');
+  const okEl      = document.getElementById('donateOk');
+
+  function fillFromI18n(){
+    try{
+      const t = (typeof App==='object' && typeof App.i18n==='function') ? (App.i18n()||{}) : {};
+      if (titleEl && t.donateTitle)  titleEl.textContent = String(t.donateTitle);
+      if (contentEl && t.donateText){
+        const p = contentEl.querySelector('p');
+        if (p) p.textContent = String(t.donateText);
+      }
+      if (okEl) okEl.textContent = String(t.ok || 'OK');
+    }catch(_){}
+  }
+  function open(){ try{ fillFromI18n(); modal.classList.remove('hidden'); }catch(_){} }
+  function close(){ try{ modal.classList.add('hidden'); }catch(_){} }
+
+  if (btn) btn.addEventListener('click', function(e){ try{ e.preventDefault(); e.stopPropagation(); }catch(_){ } open(); }, { passive:false });
+  if (closeEl) closeEl.addEventListener('click', close, { passive:true });
+  if (okEl)    okEl.addEventListener('click', close, { passive:true });
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); }, { passive:true });
+
+  try{
+    if(!window.__lex_donate_fill_hooked){
+      window.__lex_donate_fill_hooked=true;
+      document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });
+    }
+  }catch(_){}
+
+  if (document.readyState==='loading')
+    document.addEventListener('DOMContentLoaded', fillFromI18n, {once:true});
+  else
+    fillFromI18n();
+})();
