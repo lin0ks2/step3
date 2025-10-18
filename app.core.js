@@ -38,11 +38,12 @@ App.starKey = function(wid, dk){
   })();
 
   App.i18n = function(){
-  try{ var lang = (App && App.settings && App.settings.uiLang) || 'uk';
-       var base = (window.I18N && window.I18N[lang]) || {};
-       return base;
+  try{
+    var lang = (App && App.settings && App.settings.uiLang) || 'uk';
+    var base = (window.I18N && window.I18N[lang]) || {};
+    return base;
   }catch(_){ return {}; }
-;
+};
 
 App.applyI18nTitles = function(root){
   try{
@@ -64,7 +65,7 @@ App.applyI18nTitles = function(root){
       }catch(_){}
     });
   }catch(_){}
-};;
+};
 
 try{
   if (document.readyState !== 'loading') { App.applyI18nTitles(); }

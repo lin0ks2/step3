@@ -1,5 +1,5 @@
 
-(function(){
+;(function(){
   const App = window.App || (window.App = {});
   App.settings = App.settings || {};
   if (!App.settings.mode) App.settings.mode = (localStorage.getItem('lexitron.mode') || 'normal'); // default: normal
@@ -24,7 +24,7 @@
  *  - No other behavior changed (keeps absolute App.state.index semantics and prior bugfixes).
  */
 
-(function () {
+;(function () {
   const App = window.App || (window.App = {});
   const D = App.DOM || (App.DOM = {});
 
@@ -975,7 +975,7 @@ renderDictList();
   }
 })();
 
-(function(){
+;(function(){
   const infoBtn   = document.getElementById('btnInfo');
   const modal     = document.getElementById('infoModal');
   const titleEl   = document.getElementById('infoTitle');
@@ -1021,7 +1021,7 @@ renderDictList();
   else fillFromI18n();
 })();
 
-(function(){
+;(function(){
   const btn   = document.getElementById('btnSettings');
   const modal = document.getElementById('settingsModal');
   if (!btn || !modal) return;
@@ -1071,7 +1071,7 @@ renderDictList();
   else fillFromI18n();
 })();
 
-(function(){
+;(function(){
   var modal   = document.getElementById('infoModal');
   if (!modal) return;
 
@@ -1113,7 +1113,7 @@ function close(){ modal.classList.add('hidden'); }
  *  - Рисует дробные ★
  *  Подключать последним, после всех скриптов
  */
-(function(){
+;(function(){
   'use strict';
   var D=document,W=window;
 
@@ -1165,7 +1165,7 @@ function close(){ modal.classList.add('hidden'); }
  * lang-flag.fix.js — keeps header language flag in sync
  * Version: 1.6.1
  */
-(function(){
+;(function(){
   'use strict';
 
   function currentLang(){
@@ -1212,7 +1212,7 @@ function close(){ modal.classList.add('hidden'); }
 
 })();
 
-(function(){
+;(function(){
   const btn   = document.getElementById('btnDonate');
   const modal = document.getElementById('donateModal');
   if (!btn || !modal) return;
@@ -1246,7 +1246,7 @@ function close(){ modal.classList.add('hidden'); }
   else fillFromI18n();
 })();
 
-(function(){
+;(function(){
   try{
     const App = window.App || {};
     App.Trainer = App.Trainer || {};
@@ -1285,7 +1285,7 @@ App.resetProgress = function(){
     if (typeof App.renderStats === 'function') App.renderStats();
   } catch(e){(void 0); }
 };
-(function(){
+;(function(){
   const App = window.App || (window.App = {});
   function syncFromSettings(){
     try{
@@ -1342,7 +1342,7 @@ if (document.readyState === 'loading') {
     syncFromSettings();
   }
 })();
-(function(){
+;(function(){
   const App = window.App || (window.App = {});
   App.showConfirmModal = function(opts){
     opts = opts || {};
@@ -1407,7 +1407,7 @@ if (document.readyState === 'loading') {
   };
 })();
 
-(function(){
+;(function(){
   var G = (typeof window!=='undefined')?window:self;
   var App = G.App || (G.App={});
   var decks = G.decks || G.DECKS || (App.decks && App.decks.all) || (App.decks && App.decks) || {};
@@ -1556,7 +1556,7 @@ if (document.readyState === 'loading') {
   }
 })(); // end injected wrapper
 
-(function(){
+;(function(){
   function updateSpoilerHeader(){
   try{
     var flagEl = document.getElementById('dictFlag');
@@ -1644,7 +1644,7 @@ if (document.readyState === 'loading') {
   }
 })();
 
-(function(){
+;(function(){
   try{
     const modal = document.getElementById('infoModal');
     if (!modal) return;
@@ -1877,7 +1877,7 @@ regStubHint:'Placeholder — activation logic will be added later.'}
   }catch(e){(void 0); }
 })();
 
-(function(){
+;(function(){
   try{
     var modal = document.getElementById('infoModal');
     if (!modal) return;
@@ -1929,7 +1929,7 @@ regStubHint:'Placeholder — activation logic will be added later.'}
 })();
 
 /*HOOK_UI_LANG_SELECT*/
-(function(){
+;(function(){
   try{
     var sel = document.querySelector("select[name='uiLang'], #uiLang, [data-role='uiLang']");
     if(sel && !sel.__lex_hooked){
@@ -1940,3 +1940,6 @@ regStubHint:'Placeholder — activation logic will be added later.'}
     }
   }catch(_){}
 })();
+
+/*LANG_CHANGE_LISTENER_SETTINGS*/
+try{document.addEventListener('lexitron:ui-lang-changed', function(){ try{ fillFromI18n(); }catch(_){} });}catch(_){ }
