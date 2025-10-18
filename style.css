@@ -442,7 +442,14 @@ a#donate, .donate, .donate a, .donate-btn, .donate-btn a, .icon-donate,
   height: 36px;
   border-radius:12px;
 }/* Mode toggle — iOS-like switch */
-#modeToggleWrap{ user-select:none }#modeToggleWrap label{ gap:12px }#modeToggleWrap #modeToggle{
+#modeToggleWrap{
+  user-select:none;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  text-align:center;
+}#modeToggleWrap label{ gap:12px }#modeToggleWrap #modeToggle{
   appearance: none;
   position: relative;
   width: 54px; height: 30px;
@@ -1003,7 +1010,7 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
 }
 
 .modalBody .settingsSubtitle{
-  font-size:16px;
+  font-size:14px;
   font-weight:600;
   line-height:1.25;
   margin:0 0 10px;
@@ -1017,6 +1024,46 @@ html:has(#setupModal:not(.hidden)) main .card{ opacity:0; visibility:hidden; poi
   justify-content:center;
   gap:var(--gap,12px);
   margin-top:8px;
+}
+
+.modalBody .backupTitle{
+  font-size:14px;
+  font-weight:600;
+  line-height:1.25;
+  margin:0 0 10px;
+  text-align:left;
+}
+
+#modeToggleWrap .switchLabel{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+#backupSection .btn{
+  background:var(--idk-bg);
+  border:1px solid var(--border);
+  color:var(--idk-fg);
+  margin-top:6px; height:42px; padding:0 16px;
+  border-radius:12px; font-size:15px; font-weight:600;
+  display:flex; align-items:center; justify-content:center; box-shadow:none;
+  will-change: transform, filter;
+}
+
+#backupSection .btn:hover{
+  filter:brightness(1.06);
+}
+
+#backupSection .btn:focus, #backupSection .btn:focus-visible{
+  outline:none; box-shadow:0 0 0 3px var(--focus-ring);
+}
+
+#backupSection .btn:active{
+  transform: translateY(1px);
+}
+
+[data-theme="dark"] #backupSection .btn{
+  background:#111827; color:var(--text); border:1px solid #374151; box-shadow:none;
 }
 
 .modalBody #modeToggleWrap::after{
